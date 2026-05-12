@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyv & Learn: AI Fluency</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4f8; --surface:#fff; --surface2:#f8fafc; --border:#e2e8f0; --border2:#cbd5e1;
+  --blue:#0078d4; --blue-dark:#005a9e; --blue-light:#eff6ff; --blue-mid:#dbeafe;
+  --t1:#0078d4; --t1-bg:#eff6ff; --t1-border:#bfdbfe;
+  --t2:#6d28d9; --t2-bg:#f5f3ff; --t2-border:#ddd6fe;
+  --t3:#0891b2; --t3-bg:#ecfeff; --t3-border:#a5f3fc;
+  --gold:#d97706; --gold-bg:#fffbeb; --green:#059669; --green-bg:#ecfdf5; --red:#dc2626;
+  --text:#0f172a; --text2:#334155; --text3:#64748b; --muted:#94a3b8;
+  --font:'Plus Jakarta Sans',sans-serif; --mono:'Fira Code',monospace;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --shadow-lg:0 24px 64px rgba(0,0,0,.14),0 8px 24px rgba(0,0,0,.08);
+  --r:12px; --rsm:8px; --rxs:5px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font);cursor:pointer;border:none;background:none}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);height:48px;padding:0 20px;display:flex;align-items:center;box-shadow:var(--shadow-sm)}
+.topbar-logo{background:var(--blue);border-radius:7px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11px;letter-spacing:-.3px;padding:0 10px;height:30px;white-space:nowrap}
+.progress-row{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:48px;z-index:49}
+.prog-bar-main{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;max-width:300px}
+.prog-fill-main{height:100%;border-radius:3px;width:0%;background:var(--blue);transition:width .4s ease}
+.prog-label{font-size:.78rem;font-weight:600;color:var(--text3);white-space:nowrap}
+.prog-label .count{color:var(--blue)}
+
+/* PAGE */
+.page{max-width:1000px;margin:0 auto;padding:36px 24px 80px}
+
+/* HERO */
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:44px 48px 40px;margin-bottom:28px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,120,212,.07) 0%,transparent 70%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--blue-light);border:1px solid var(--t1-border);padding:4px 12px;border-radius:20px;margin-bottom:20px}
+.hero-h1{font-size:clamp(2.6rem,5vw,3.8rem);font-weight:800;letter-spacing:-.04em;line-height:1;color:var(--text);margin-bottom:6px}
+.hero-h1 .amp{color:var(--blue)}
+.hero-sub{font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:600;color:var(--text3);letter-spacing:-.02em;margin-bottom:14px}
+.hero-tagline{font-style:italic;font-weight:300;color:var(--text3);font-size:.98rem;margin-bottom:32px;max-width:480px}
+.hero-stats{display:flex;border:1px solid var(--border);border-radius:var(--rsm);overflow:hidden;width:fit-content;margin-bottom:24px}
+.hstat{padding:14px 26px;background:var(--bg);border-right:1px solid var(--border)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-size:1.7rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:3px;letter-spacing:-.03em}
+.hstat-l{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.hero-note{font-size:.875rem;color:var(--text3);background:var(--blue-light);border:1px solid var(--t1-border);border-left:3px solid var(--blue);border-radius:var(--rxs);padding:11px 16px;display:inline-block;max-width:600px}
+.hero-note strong{color:var(--blue);font-style:normal}
+
+/* TRACK NAV */
+.track-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.tnav{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:all .18s;box-shadow:var(--shadow-sm);text-align:left}
+.tnav:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-2px)}
+.tnav-num{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.tn1 .tnav-num{color:var(--t1)} .tn2 .tnav-num{color:var(--t2)} .tn3 .tnav-num{color:var(--t3)}
+.tnav-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:-.01em}
+.tnav-sub{font-size:.73rem;color:var(--text3);margin-bottom:12px}
+.tnav-prog{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.tnav-fill{height:100%;border-radius:2px;width:0%;transition:width .4s}
+.tn1 .tnav-fill{background:var(--t1)} .tn2 .tnav-fill{background:var(--t2)} .tn3 .tnav-fill{background:var(--t3)}
+
+/* TRACK SECTION */
+.track-section{margin-bottom:36px}
+.track-head{background:var(--surface);border:1px solid var(--border);border-bottom:none;border-radius:var(--r) var(--r) 0 0;padding:22px 26px;display:flex;align-items:center;gap:14px}
+.ts1{border-top:3px solid var(--t1)} .ts2{border-top:3px solid var(--t2)} .ts3{border-top:3px solid var(--t3)}
+.track-icon{width:42px;height:42px;border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ti1{background:var(--t1-bg);border:1px solid var(--t1-border)} .ti2{background:var(--t2-bg);border:1px solid var(--t2-border)} .ti3{background:var(--t3-bg);border:1px solid var(--t3-border)}
+.track-meta{flex:1;min-width:0}
+.track-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.tl1{color:var(--t1)} .tl2{color:var(--t2)} .tl3{color:var(--t3)}
+.track-title{font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:2px}
+.track-desc{font-size:.8rem;color:var(--text3);font-style:italic}
+.track-badge{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:20px;flex-shrink:0}
+.tb1{background:var(--t1-bg);color:var(--t1);border:1px solid var(--t1-border)}
+.tb2{background:var(--t2-bg);color:var(--t2);border:1px solid var(--t2-border)}
+.tb3{background:var(--t3-bg);color:var(--t3);border:1px solid var(--t3-border)}
+
+/* MODULE LIST */
+.module-list{background:var(--surface);border:1px solid var(--border);border-top:none;overflow:hidden;box-shadow:var(--shadow-sm)}
+.module-row{display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.module-row:last-child{border-bottom:none}
+.module-row:hover{background:var(--surface2)}
+.mod-badge{font-family:var(--mono);font-size:10.5px;font-weight:500;text-align:center;padding:5px 7px;border-radius:var(--rxs);line-height:1.3}
+.mb1{background:var(--t1-bg);color:var(--t1);border:1px solid var(--t1-border)}
+.mb2{background:var(--t2-bg);color:var(--t2);border:1px solid var(--t2-border)}
+.mb3{background:var(--t3-bg);color:var(--t3);border:1px solid var(--t3-border)}
+.mod-meta{min-width:0}
+.mod-title{font-size:.88rem;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-hook{font-size:.74rem;color:var(--text3);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.check-btn{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .18s;flex-shrink:0}
+.check-btn:hover{border-color:var(--green)}
+.check-btn.done{background:var(--green);border-color:var(--green);color:#fff}
+.open-btn{font-size:.73rem;font-weight:700;color:var(--blue);background:var(--blue-light);border:1px solid var(--t1-border);border-radius:var(--rxs);padding:5px 11px;transition:all .14s;white-space:nowrap}
+.open-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* CAPSTONE */
+.capstone{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);padding:22px 26px;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--shadow-sm)}
+.cp1{border-top:2px solid var(--t1)} .cp2{border-top:2px solid var(--t2)} .cp3{border-top:2px solid var(--t3)}
+.cap-trophy{font-size:26px;flex-shrink:0;line-height:1;margin-top:2px}
+.cap-body{flex:1}
+.cap-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.cl1{color:var(--t1)} .cl2{color:var(--t2)} .cl3{color:var(--t3)}
+.cap-title{font-size:.98rem;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:5px}
+.cap-desc{font-size:.83rem;color:var(--text2);line-height:1.65;max-width:660px}
+
+/* MODAL OVERLAY */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:200;display:none;backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+
+/* MODAL */
+.modal{position:relative;width:92vw;max-width:960px;height:92vh;background:var(--surface);z-index:201;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);border-radius:var(--r);overflow:hidden;opacity:0;transform:scale(.96) translateY(12px);transition:opacity .25s ease,transform .25s ease}
+.modal.open{opacity:1;transform:scale(1) translateY(0)}
+.modal-bar{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
+.modal-track{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.modal-close{width:32px;height:32px;border-radius:var(--rxs);border:1px solid var(--border);background:var(--surface2);color:var(--text3);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .14s}
+.modal-close:hover{background:var(--border);color:var(--text)}
+.modal-body{flex:1;overflow-y:auto;padding:32px 36px}
+.modal-mnum{font-family:var(--mono);font-size:.73rem;font-weight:500;padding:4px 10px;border-radius:var(--rxs);display:inline-block;margin-bottom:12px}
+.modal-title{font-size:1.75rem;font-weight:800;color:var(--text);letter-spacing:-.03em;line-height:1.15;margin-bottom:8px}
+.modal-hook{font-size:.98rem;font-style:italic;color:var(--text3);font-weight:300;padding-bottom:22px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.sec-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.modal-section{margin-bottom:28px}
+.concept{font-size:.9rem;color:var(--text2);line-height:1.8}
+.concept p{margin-bottom:12px}
+.concept p:last-child{margin-bottom:0}
+.concept strong{color:var(--text);font-weight:700}
+.highlight{background:var(--blue-light);border-left:3px solid var(--blue);padding:12px 16px;border-radius:0 var(--rxs) var(--rxs) 0;margin:14px 0;font-size:.875rem;line-height:1.7}
+.takeaways{display:flex;flex-direction:column;gap:7px}
+.takeaway{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);font-size:.855rem;color:var(--text2);line-height:1.5}
+.tw-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px}
+.dyk{background:var(--gold-bg);border:1px solid #fde68a;border-left:3px solid var(--gold);border-radius:var(--rxs);padding:13px 16px;font-size:.87rem;color:var(--text2);line-height:1.65}
+.dyk-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:5px}
+.handson{background:var(--green-bg);border:1px solid #a7f3d0;border-radius:var(--rsm);padding:18px}
+.handson-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:7px}
+.handson-title{font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:10px}
+.handson ol{margin-left:18px;display:flex;flex-direction:column;gap:7px}
+.handson li{font-size:.855rem;color:var(--text2);line-height:1.6}
+.handson a{color:var(--blue);text-decoration:underline}
+.handson p{font-size:.855rem;color:var(--text2);line-height:1.65}
+.quiz{display:flex;flex-direction:column;gap:14px}
+.quiz-q{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);padding:15px}
+.quiz-q-text{font-size:.87rem;font-weight:600;color:var(--text);margin-bottom:9px;line-height:1.5}
+.quiz-opts{display:flex;flex-direction:column;gap:5px}
+.quiz-opt{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;background:#fff;border:1px solid var(--border);border-radius:var(--rxs);font-size:.82rem;color:var(--text2);line-height:1.45;transition:all .13s;text-align:left;width:100%}
+.quiz-opt:hover:not(:disabled){border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.quiz-opt.correct{background:var(--green-bg);border-color:#a7f3d0;color:var(--green)}
+.quiz-opt.wrong{background:#fef2f2;border-color:#fecaca;color:var(--red)}
+.quiz-opt:disabled{cursor:default}
+.quiz-fb{margin-top:7px;font-size:.8rem;padding:7px 10px;border-radius:var(--rxs);display:none;line-height:1.5}
+.quiz-fb.show{display:block}
+.quiz-fb.ok{background:var(--green-bg);color:var(--green)}
+.quiz-fb.bad{background:#fef2f2;color:var(--red)}
+.resources{display:flex;flex-wrap:wrap;gap:8px}
+.res-chip{font-size:.78rem;font-weight:600;color:var(--blue);background:var(--blue-light);border:1px solid var(--t1-border);border-radius:20px;padding:5px 14px;transition:all .13s}
+.res-chip:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sandbox{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);padding:18px}
+.sandbox-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:11px}
+.sandbox-row{display:flex;gap:8px;margin-bottom:13px}
+.sandbox-input{flex:1;background:#fff;border:1px solid var(--border2);border-radius:var(--rxs);padding:8px 13px;font-family:var(--font);font-size:.87rem;color:var(--text);outline:none}
+.sandbox-input:focus{border-color:var(--blue)}
+.sandbox-run{background:var(--blue);color:#fff;border-radius:var(--rxs);padding:8px 16px;font-size:.82rem;font-weight:700;transition:background .13s;white-space:nowrap}
+.sandbox-run:hover{background:var(--blue-dark)}
+.sandbox-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.sb-provider{background:#fff;border:1px solid var(--border);border-radius:var(--rxs);overflow:hidden}
+.sb-head{padding:8px 11px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.sb-name{font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em}
+.sp-az .sb-name{color:var(--t1)} .sp-cl .sb-name{color:var(--t2)} .sp-gm .sb-name{color:var(--t3)}
+.sb-model{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.sb-resp{padding:9px 11px;font-size:.79rem;color:var(--text2);line-height:1.55;min-height:86px;font-style:italic}
+.sb-foot{padding:5px 11px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+.sb-meta{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.modal-foot{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.complete-btn{display:flex;align-items:center;gap:7px;background:var(--blue);color:#fff;border-radius:var(--rsm);padding:9px 18px;font-size:.855rem;font-weight:700;transition:background .13s}
+.complete-btn:hover{background:var(--blue-dark)}
+.complete-btn.done{background:var(--green)}
+.modal-nav{display:flex;gap:7px}
+.nav-btn{padding:8px 15px;font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rxs);background:#fff;color:var(--text2);transition:all .13s}
+.nav-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.nav-btn:disabled{opacity:.38;cursor:not-allowed}
+.footer{text-align:center;padding:32px 0 0;border-top:1px solid var(--border);margin-top:12px}
+.footer p{font-size:.83rem;color:var(--muted);font-style:italic}
+.footer strong{color:var(--blue);font-style:normal}
+@media(max-width:680px){
+  .hero{padding:28px 22px 24px}
+  .track-nav{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap}
+  .module-row{grid-template-columns:48px 1fr auto;gap:8px}
+  .sandbox-grid{grid-template-columns:1fr}
+  .modal{width:100vw;max-width:100vw;height:100vh;border-radius:0}
+  .modal-body{padding:22px 18px}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page>*{animation:fadeUp .35s ease both}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">Lyv & Learn</div>
+  </div>
+</div>
+<div class="progress-row">
+  <span class="prog-label">Progress</span>
+  <div class="prog-bar-main"><div class="prog-fill-main" id="pf-main"></div></div>
+  <span class="prog-label"><span class="count" id="done-count">0</span> / 30 modules complete</span>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-tag">🪟 Microsoft AI Enablement Program</div>
+    <h1 class="hero-h1">Lyv <span class="amp">&</span> Learn:</h1>
+    <div class="hero-sub">AI Fluency</div>
+    <p class="hero-tagline">Train your mind the way you train your body. 30 modules. Fluent in AI.</p>
+    <div class="hero-stats" style="display:flex;flex-wrap:nowrap;">
+      <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Tracks</div></div>
+      <div class="hstat"><div class="hstat-n">30</div><div class="hstat-l">Modules</div></div>
+      <div class="hstat" style="border-right:none"><div class="hstat-n">3</div><div class="hstat-l">Capstones</div></div>
+    </div>
+    <div class="hero-note"><strong>Same discipline. Different gains.</strong> — Go at your own pace. One module at a time, or sprint through a full track in a weekend.</div>
+  </div>
+
+  <div class="track-nav">
+    <button class="tnav tn1" onclick="document.getElementById('track1').scrollIntoView({behavior:'smooth'})">
+      <div class="tnav-num">Track 01 · Modules 1–10</div>
+      <div class="tnav-title">AI Foundations</div>
+      <div class="tnav-sub">Technical confidence — how AI really works</div>
+      <div class="tnav-prog"><div class="tnav-fill" id="tnf1"></div></div>
+    </button>
+    <button class="tnav tn2" onclick="document.getElementById('track2').scrollIntoView({behavior:'smooth'})">
+      <div class="tnav-num">Track 02 · Modules 11–20</div>
+      <div class="tnav-title">AI for Business</div>
+      <div class="tnav-sub">Strategic fluency — C-suite ready</div>
+      <div class="tnav-prog"><div class="tnav-fill" id="tnf2"></div></div>
+    </button>
+    <button class="tnav tn3" onclick="document.getElementById('track3').scrollIntoView({behavior:'smooth'})">
+      <div class="tnav-num">Track 03 · Modules 21–30</div>
+      <div class="tnav-title">Microsoft AI in the Market</div>
+      <div class="tnav-sub">Enablement — customer ready</div>
+      <div class="tnav-prog"><div class="tnav-fill" id="tnf3"></div></div>
+    </button>
+  </div>
+
+  <div class="track-section" id="track1">
+    <div class="track-head ts1">
+      <div class="track-icon ti1">⚡</div>
+      <div class="track-meta">
+        <div class="track-label tl1">Track 01 · Modules 1–10</div>
+        <div class="track-title">AI Foundations</div>
+        <div class="track-desc">Build the technical base. By the end you can hold a confident conversation with any engineer, data scientist, or AI vendor.</div>
+      </div>
+      <span class="track-badge tb1">Technical</span>
+    </div>
+    <div class="module-list" id="list1"></div>
+    <div class="capstone cp1">
+      <div class="cap-trophy">🏆</div>
+      <div class="cap-body">
+        <div class="cap-label cl1">Track 1 Capstone</div>
+        <div class="cap-title">Build & Document</div>
+        <div class="cap-desc">Using Azure AI Foundry or Copilot Studio, build a working AI feature — a RAG demo, a simple agent, or a prompted workflow. Document what it does, how you built it, what you'd improve, and what it would cost to run at scale. This is your first portfolio piece.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-section" id="track2">
+    <div class="track-head ts2">
+      <div class="track-icon ti2">📈</div>
+      <div class="track-meta">
+        <div class="track-label tl2">Track 02 · Modules 11–20</div>
+        <div class="track-title">AI for Business</div>
+        <div class="track-desc">The strategic layer. By the end you can walk into any C-suite conversation and lead it.</div>
+      </div>
+      <span class="track-badge tb2">Strategic</span>
+    </div>
+    <div class="module-list" id="list2"></div>
+    <div class="capstone cp2">
+      <div class="cap-trophy">🏆</div>
+      <div class="cap-body">
+        <div class="cap-label cl2">Track 2 Capstone</div>
+        <div class="cap-title">Make the Case</div>
+        <div class="cap-desc">Pick a real org — yours, a customer's, or a well-known company. Run the AI maturity assessment, identify the top 3 use cases, and build a one-page business case for the highest-priority one. Put it in a format you could present tomorrow.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-section" id="track3">
+    <div class="track-head ts3">
+      <div class="track-icon ti3">🪟</div>
+      <div class="track-meta">
+        <div class="track-label tl3">Track 03 · Modules 21–30</div>
+        <div class="track-title">Microsoft AI in the Market</div>
+        <div class="track-desc">The enablement layer. By the end you can run any customer AI conversation — and win it.</div>
+      </div>
+      <span class="track-badge tb3">Enablement</span>
+    </div>
+    <div class="module-list" id="list3"></div>
+    <div class="capstone cp3">
+      <div class="cap-trophy">🏆</div>
+      <div class="cap-body">
+        <div class="cap-label cl3">Track 3 Capstone</div>
+        <div class="cap-title">Run the Room</div>
+        <div class="cap-desc">Build a complete customer AI workshop package for one specific industry vertical. Include the maturity assessment, use case prioritization, Microsoft solution mapping, the "why Microsoft" narrative, and a 90-day roadmap. Present it to a colleague or record yourself.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p><strong>Lyv & Learn: AI Fluency</strong></p>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-bar">
+      <span class="modal-track" id="modal-track"></span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot">
+      <button class="complete-btn" id="complete-btn" onclick="toggleComplete()">
+        <span id="complete-icon">○</span>
+        <span id="complete-text">Mark Complete</span>
+      </button>
+      <div class="modal-nav">
+        <button class="nav-btn" id="prev-btn" onclick="navModule(-1)">← Prev</button>
+        <button class="nav-btn" id="next-btn" onclick="navModule(1)">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const MODULES = [
+  {
+    id:1, track:1, num:"M01",
+    title:"What Is AI Really?",
+    hook:"Everyone's talking about it. Most people can't define it. You will after this.",
+    concept:`
+<p>Artificial Intelligence is one of the most used — and most misunderstood — terms in technology. Before you can build with it, sell it, or lead a conversation about it, you need a map of the territory.</p>
+<p><strong>The four layers of the AI family:</strong></p>
+<p><strong>Artificial Intelligence (AI)</strong> is the broadest umbrella — any system that performs tasks typically requiring human intelligence. This includes rule-based systems from the 1950s and modern neural networks.</p>
+<p><strong>Machine Learning (ML)</strong> is the subset where systems learn from data rather than being explicitly programmed. Instead of writing rules, you provide examples. A spam filter that learns from millions of emails is ML.</p>
+<p><strong>Deep Learning</strong> uses artificial neural networks with many layers — hence "deep." These networks automatically discover patterns enabling breakthroughs in image recognition, speech, and language that earlier approaches couldn't achieve.</p>
+<p><strong>Generative AI (GenAI)</strong> is the newest layer — a subset of deep learning where models generate new content: text, images, code, audio, and video. ChatGPT, Copilot, Claude, and Gemini all live here.</p>
+<div class="highlight"><strong>Why this moment is different from previous hype cycles:</strong> Three things converged — massive internet-scale datasets, cheap GPU compute, and the transformer architecture (2017). The result wasn't incremental improvement. It was a qualitative step-change: AI that can converse, reason, code, and create at near-human quality. Previous cycles delivered narrow tools. This cycle is delivering on a much wider scope — which is why it feels different, because it is different.</div>
+<p>Understanding where a technology sits in this hierarchy shapes how you evaluate it, what questions you ask vendors, and where the real risks lie. A rule-based system and a generative model fail in completely different ways.</p>`,
+    takeaways:[
+      "AI is a family of technologies — ML, deep learning, and GenAI are increasingly specific subsets",
+      "Generative AI represents a genuine step-change, not just another hype cycle — the transformer architecture made it possible",
+      "Most 'AI' you interact with daily is narrow AI doing one specific task — GenAI models like Copilot are different in kind",
+      "The difference between AI types matters: they fail differently, cost differently, and require different governance",
+      "This vocabulary gives you credibility in any AI conversation — with engineers, executives, or customers"
+    ],
+    dyk:`The term 'Artificial Intelligence' was coined in 1956 at a conference at Dartmouth College. For 65 years, AI went through multiple 'winters' — periods of lost funding when promises outpaced results. The current wave has been sustained longer than any previous one, primarily because the economic value being created is real and measurable, not theoretical.`,
+    handson:{title:"A moment to think", type:"reflection", steps:[
+      "Before you move on — where have you already interacted with AI today without realizing it? Think about your email, your phone, your commute. You don't need to write anything. Just sit with it.",
+      "Think of one tool you use every day that has gotten noticeably better over the last two years. That improvement almost certainly has ML behind it.",
+      "If someone stopped you in the hallway right now and asked 'what's the difference between AI and GenAI?' — could you answer in 30 seconds? If not, re-read the concept section. If yes, you're ready to move on."
+    ]},
+    quiz:[
+      {q:"A recommendation engine that learns which movies you like from your watch history is best described as:", opts:["Rule-based AI","Machine Learning","Generative AI","Deep Learning only"], a:1, fb:"It learns from data (your behavior) to make predictions (recommendations). That's the core definition of Machine Learning."},
+      {q:"What primarily distinguishes the current AI wave from previous hype cycles?", opts:["More government funding","Better marketing","Convergence of large datasets, cheap GPU compute, and the transformer architecture","Faster internet speeds"], a:2, fb:"The three-way convergence created qualitatively new capabilities, not just incremental improvements."},
+      {q:"Microsoft Copilot falls into which category of AI?", opts:["Narrow AI","Rule-based AI","Generative AI","Machine Learning only"], a:2, fb:"Copilot uses large language models to generate text, code, and summaries — that's Generative AI."}
+    ],
+    resources:[{l:"Harvard CS50 AI",u:"https://cs50.harvard.edu/ai/"},{l:"Microsoft Learn: AI Fundamentals",u:"https://learn.microsoft.com/en-us/training/modules/get-started-ai-fundamentals/"}]
+  },
+  {
+    id:2, track:1, num:"M02",
+    title:"How Machines Learn",
+    hook:"It's not magic. It's math applied to patterns — and once you see it, you can't unsee it.",
+    concept:`
+<p>When people say a machine "learned" something, they mean it adjusted its internal parameters through exposure to examples until it got consistently better at a task.</p>
+<p><strong>The learning loop:</strong> Every ML model starts with randomly initialized <strong>weights</strong>. You feed it training data — input/output pairs. The model makes a prediction. It compares to the correct answer and calculates how wrong it was (the <strong>loss</strong>). It adjusts its weights slightly to be less wrong next time. Repeat billions of times and the model gets very good.</p>
+<p>This is <strong>training</strong> — computationally expensive. GPT-4 reportedly cost over $100M in compute. Once trained, you run the model in <strong>inference</strong> mode — feeding new inputs to get outputs. The model doesn't change during inference.</p>
+<div class="highlight"><strong>The most important thing most people don't know about ML:</strong> Data quality beats algorithm quality almost every time. A mediocre model trained on excellent data outperforms a brilliant model trained on bad data. This is why data strategy has to come before any AI deployment — and why Module 15 exists.</div>
+<p><strong>Supervised vs. unsupervised vs. RLHF:</strong><br>
+<strong>Supervised learning</strong> uses labeled examples (this email is spam / not spam) — the foundation of most enterprise AI.<br>
+<strong>Unsupervised learning</strong> finds patterns in unlabeled data — clustering customers, detecting anomalies.<br>
+<strong>RLHF (Reinforcement Learning from Human Feedback)</strong> is how modern LLMs like GPT and Claude are fine-tuned to be helpful and safe. Human raters evaluate responses, and the model trains toward preferred outputs. This is why Copilot feels genuinely helpful rather than just predicting text.</p>`,
+    takeaways:[
+      "Models learn by adjusting weights through examples — training is expensive, inference is cheap",
+      "Data quality is the biggest variable — bad data produces bad models regardless of algorithm sophistication",
+      "Training changes weights; inference applies them — most enterprise AI spending is on inference at scale",
+      "RLHF is why modern AI assistants feel aligned with human preferences, not just statistically likely",
+      "Understanding the loop helps you ask better questions: What was it trained on? How recent? What was the label quality?"
+    ],
+    dyk:`The training data for GPT-4 is estimated to include over 1 trillion words — roughly the equivalent of reading every English-language book ever written more than 10 times over, plus a large fraction of the public internet. The model 'read' all of this in weeks using thousands of specialized AI chips running in parallel. Yet when you call the API, inference costs a fraction of a cent.`,
+    handson:{title:"Interrogate a Model's Training", type:"exercise", steps:[
+      "Open Microsoft Copilot at copilot.microsoft.com (no login required)",
+      "Ask: 'What is today's stock price of Microsoft?' — notice it can't answer accurately. Why not?",
+      "Ask: 'Summarize the last email I received' — it can't. Notice what that tells you about how it works.",
+      "Ask: 'What is the capital of France?' — instant, confident, correct.",
+      "Think about what those three interactions reveal about the difference between what a model knows, what it can access, and what it can't. That gap is exactly what Module 8 (RAG) solves."
+    ]},
+    quiz:[
+      {q:"What happens to a model's weights during inference?", opts:["They update based on new inputs","They remain fixed — the model applies what it learned during training","They reset to random values","They slowly degrade"], a:1, fb:"During inference, weights are frozen. The model applies learned patterns without changing. This is why a model trained on old data doesn't automatically know about new events."},
+      {q:"RLHF is primarily used to:", opts:["Make models faster","Align model behavior with human preferences and reduce harmful outputs","Reduce training cost","Improve code generation specifically"], a:1, fb:"RLHF trains models to produce responses that human raters prefer — making them more helpful, harmless, and honest."},
+      {q:"A company has a state-of-the-art algorithm but trains it on mislabeled customer data. What outcome is most likely?", opts:["The algorithm overcomes data issues through sophistication","The model performs poorly — data quality is the primary determinant","The model self-corrects in production","Results will be mixed but acceptable"], a:1, fb:"Garbage in, garbage out. Data quality is the most reliable predictor of ML outcomes — always."}
+    ],
+    resources:[{l:"3Blue1Brown: Neural Networks",u:"https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi"},{l:"Microsoft Learn: Intro to ML",u:"https://learn.microsoft.com/en-us/training/modules/introduction-to-machine-learning/"}]
+  },
+  {
+    id:3, track:1, num:"M03",
+    title:"The Transformer Revolution",
+    hook:"One research paper in 2017 changed everything. Here's what it actually said.",
+    concept:`
+<p>In June 2017, eight Google researchers published "Attention Is All You Need." It introduced the <strong>transformer architecture</strong> — the foundation of every major LLM today. Understanding why transformers were revolutionary (without the math) is one of the highest-leverage concepts in AI fluency.</p>
+<p><strong>What came before:</strong> Before transformers, language models used recurrent neural networks (RNNs) that processed text sequentially — word by word. Problems: they couldn't handle long texts well (early information got "forgotten") and they couldn't be parallelized easily, making training slow.</p>
+<p><strong>What transformers changed:</strong> The <strong>attention mechanism</strong> processes all words simultaneously and learns which words are most relevant to each other — regardless of position. When processing "bank" in a sentence, attention weighs whether "river" or "money" nearby is most relevant. This context-awareness is why modern LLMs understand nuance in ways earlier models couldn't.</p>
+<div class="highlight"><strong>Tokens, embeddings, and context windows:</strong> Text is broken into <strong>tokens</strong> (word-pieces). Each token is converted to a vector of numbers called an <strong>embedding</strong> — a mathematical representation of meaning. The model processes these through many layers of attention. The <strong>context window</strong> is the maximum tokens processable at once. GPT-4: 128K. Claude 3: up to 200K. Longer context = larger documents, longer conversations, more examples — and higher cost.</div>
+<p><strong>Why every major AI lab uses the same architecture:</strong> GPT-4, Claude, Gemini, Llama, and Mistral are all transformer variants. Concepts you learn about one transfer to all. Competitive advantage doesn't live at the architecture layer — it lives in training data, scale, fine-tuning, and the product layer on top. This is why Microsoft's Copilot story — wrapping best-in-class models in enterprise security and M365 integration — is a more durable moat than building a custom model from scratch.</p>`,
+    takeaways:[
+      "The attention mechanism processes all words simultaneously, enabling contextual understanding impossible before 2017",
+      "All major LLMs use transformer variants — concepts transfer across GPT, Claude, Gemini, and Llama",
+      "Context windows determine how much text a model can 'see' at once — critical for enterprise use cases",
+      "Competitive advantage isn't at the architecture layer — it's in data, scale, and the product experience on top",
+      "Understanding transformers lets you evaluate vendor claims more accurately and have credible technical conversations"
+    ],
+    dyk:`'Attention Is All You Need' has been cited over 100,000 times — one of the most influential scientific papers of the 21st century. Three of its eight authors later co-founded Anthropic (which makes Claude). The paper that changed everything was published by a team that had largely dispersed within two years.`,
+    handson:{title:"Test Context Window Limits", type:"exercise", steps:[
+      "Open Microsoft Copilot (copilot.microsoft.com)",
+      "Start a conversation and ask 10+ questions on different topics",
+      "Then ask: 'What was the first question I asked you in this conversation?' — observe whether it remembers",
+      "Paste a long document and ask a question about the beginning, then one about the end",
+      "Think about it: if a model can only 'see' a limited amount of text at once, what kinds of enterprise tasks become impossible? What would you need to work around it?"
+    ]},
+    quiz:[
+      {q:"What is the core innovation of the transformer architecture?", opts:["Processing text faster","The attention mechanism — weighing relationships between all words simultaneously","Using more training data","Running on GPU instead of CPU"], a:1, fb:"The attention mechanism is the key innovation — all tokens processed simultaneously with learned relevance weights across positions."},
+      {q:"Where does competitive differentiation in AI actually come from, given all major LLMs use transformers?", opts:["Fundamentally different architectures","Training data quality and scale, fine-tuning approaches, and the product layer on top","Hardware used for inference","The programming language used to build them"], a:1, fb:"Architecture is largely commoditized. Differentiation comes from data, fine-tuning, and the product experience — security, integrations, and enterprise features."},
+      {q:"A 200K token context window is significant for enterprise AI because:", opts:["It makes the model more accurate on simple questions","It allows longer documents, larger conversation histories, and more complex multi-document tasks","It reduces inference cost","It enables the model to learn from new information"], a:1, fb:"Context window size directly determines what enterprise use cases are possible. Summarizing a 400-page contract requires large context windows."}
+    ],
+    resources:[{l:"Illustrated Transformer",u:"https://jalammar.github.io/illustrated-transformer/"},{l:"MIT 6.S191: Intro to Deep Learning",u:"https://introtodeeplearning.com/"}]
+  },
+  {
+    id:4, track:1, num:"M04",
+    title:"Tokens, Context & Cost",
+    hook:"The most underrated concept in practical AI. Get this wrong and you'll waste money, time, and trust.",
+    concept:`
+<p>When you call an AI API, you don't pay per question. You pay per <strong>token</strong>. Understanding tokens is not optional for anyone building or buying AI at scale — it's the difference between a project that runs on budget and one that blows it.</p>
+<p><strong>What is a token?</strong> A token is roughly a word-piece. "Tokenization" might become 3 tokens. Common words are usually single tokens. Rare words and non-English text use more tokens per word. Average: 1 token ≈ 0.75 words for English. A 500-word email is roughly 650–700 tokens.</p>
+<p><strong>The billing model:</strong> Every API call has <strong>input tokens</strong> (your prompt, system prompt, conversation history) and <strong>output tokens</strong> (the model's response). You're billed for both. Input tokens are typically cheaper — generating is computationally more expensive than reading.</p>
+<div class="highlight"><strong>Azure OpenAI pricing (GPT-4o, approximate 2025):</strong><br>
+Input: ~$2.50 per million tokens · Output: ~$10.00 per million tokens<br>
+A 500-word prompt + 300-word response ≈ 1,050 tokens total ≈ $0.003 per call<br>
+100,000 calls/month = $300 · 1,000,000 calls = $3,000/month<br>
+<em>This is why prompt length is an engineering decision, not just a writing one.</em></div>
+<p><strong>Context windows and cost:</strong> Larger context windows often have a higher price tier. Sending a 100-page PDF with every user question is possible but expensive at scale. Context design — deciding what to include and what to leave out — is a core engineering skill. System prompts that are too long waste money on every call. Conversation history that grows unbounded costs more per call as it grows.</p>`,
+    takeaways:[
+      "Tokens are word-pieces (~0.75 words/token for English) — input and output tokens are both billed",
+      "Output tokens cost significantly more than input — response length directly affects cost",
+      "Context window design is an engineering discipline — what you include in every call has cost implications at scale",
+      "A small difference in prompt length can mean thousands of dollars per month at enterprise volumes",
+      "Token economics helps you evaluate AI vendor pricing, design cost-efficient systems, and build realistic business cases"
+    ],
+    dyk:`The total compute used to train GPT-4 is estimated at approximately 2.15 × 10²⁵ FLOPS. If every person on Earth performed one arithmetic operation per second, it would take over 68,000 years to match GPT-4's training run. Yet inference costs a fraction of a cent per call — because once trained, the model just applies learned weights.`,
+    handson:{title:"Calculate Real Token Costs", type:"exercise", steps:[
+      "Go to platform.openai.com/tokenizer",
+      "Paste a paragraph of your actual work text — an email, a prompt, a policy section",
+      "Count the tokens displayed",
+      "Paste a longer, more detailed version of the same content. Count again.",
+      "At $2.50/million input tokens: what does each version cost per call? Multiply by 10,000 and 100,000 calls/month.",
+      "Add typical output cost (200 words ≈ 260 tokens at $10/million). Write down the total monthly figure."
+    ]},
+    quiz:[
+      {q:"Why are output tokens priced higher than input tokens?", opts:["Output tokens are longer","Generating text is computationally more expensive than reading it","Output quality is higher","Arbitrary pricing"], a:1, fb:"Generating each output token requires a full forward pass through the model. Input tokens are processed in parallel. This compute difference is reflected in pricing."},
+      {q:"A system sends a 2,000-token system prompt with every query. At 500,000 calls/month and $2.50/million input tokens, what does just the system prompt cost monthly?", opts:["$25","$250","$2,500","$25,000"], a:2, fb:"2,000 × 500,000 = 1 billion tokens = 1,000 million × $2.50 = $2,500/month. Trimming 20% saves $500/month."},
+      {q:"The most practical reason to understand context windows is:", opts:["Technical curiosity","Context window design affects both feasibility (can the use case fit?) and cost (what does it cost at scale?)","They only matter for document summarization","Larger windows always produce better outputs"], a:1, fb:"Context windows determine feasibility and economics. Both matter for production AI systems."}
+    ],
+    resources:[{l:"OpenAI Tokenizer",u:"https://platform.openai.com/tokenizer"},{l:"Anthropic Token Counting",u:"https://docs.anthropic.com/en/docs/build-with-claude/token-counting"},{l:"Azure OpenAI Pricing",u:"https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/"}]
+  },
+  {
+    id:5, track:1, num:"M05",
+    title:"Prompt Engineering That Actually Works",
+    hook:"The difference between a good prompt and a bad one is the difference between a useful tool and a frustrating one.",
+    concept:`
+<p><strong>Prompt engineering</strong> is the practice of designing inputs to language models to get reliable, high-quality outputs. It's less about creativity and more about precision — giving the model context, role, format, constraints, and examples.</p>
+<p><strong>The four most powerful patterns:</strong></p>
+<p><strong>1. System prompts:</strong> Set the model's persona, expertise, output format, and behavioral constraints before the user types anything. A well-designed system prompt can transform a generic LLM into a specialized tool. Example: "You are a concise executive communicator. Always respond in 3 sentences or fewer. Lead with the key action or decision needed. Use plain English, no jargon."</p>
+<p><strong>2. Few-shot examples:</strong> Show 2–3 examples of ideal input→output pairs. Research consistently shows this outperforms written instructions for accuracy and consistency. Your examples do the work of a 500-word description, in less space.</p>
+<p><strong>3. Chain-of-thought:</strong> Adding "think step by step" significantly improves accuracy on reasoning tasks. The model writing out its reasoning actually improves the quality of that reasoning — not just its legibility.</p>
+<div class="highlight"><strong>4. Structured output:</strong> Ask for JSON, XML, or a specific schema. Makes outputs parseable by code, consistent across calls, and easier to validate. For any AI feature feeding into another system, structured output is not optional — it's the difference between a demo and a production-ready integration.</div>
+<p><strong>Cross-provider consistency:</strong> These four patterns work across OpenAI, Anthropic, Google, and Azure OpenAI. The syntax differs slightly, but the principles are identical. Master them once, apply everywhere.</p>
+<p><strong>In Microsoft 365 Copilot:</strong> The framing of your request serves the same function as a system prompt. "Summarize this document in 3 bullet points for an executive who has 30 seconds to read it" is prompt engineering applied to Copilot in Word.</p>`,
+    takeaways:[
+      "System prompts are your most powerful lever — they define role, format, constraints, and tone for every interaction",
+      "Few-shot examples consistently outperform written instructions for establishing output quality",
+      "Chain-of-thought ('think step by step') is a free accuracy upgrade on any reasoning-intensive task",
+      "Structured output (JSON, XML) is essential for any AI feature that integrates with other systems",
+      "These four patterns work across all major providers — learn them once, apply everywhere"
+    ],
+    dyk:`Anthropic's research shows a well-engineered system prompt can close approximately 80% of the performance gap between a smaller, cheaper model and a larger, more expensive one on many tasks. This is why prompt engineering is often a better ROI than upgrading to a more expensive model — and why organizations that do it well have a real competitive advantage.`,
+    handson:{title:"3-Round Prompt Engineering Experiment", type:"exercise", steps:[
+      "Open Google AI Studio at aistudio.google.com (free, no login required)",
+      "Round 1 — Vague prompt: Type 'Write a summary of an AI project update.' Run it. Copy the output.",
+      "Round 2 — Add a system prompt with persona and format. Run again. Copy the output.",
+      "Round 3 — Add 2 few-shot examples of ideal summaries before your request. Run again.",
+      "Compare all three side by side. Which one would you actually send to a stakeholder? Notice the gap between Round 1 and Round 3 — that gap is the value of prompt engineering."
+    ]},
+    quiz:[
+      {q:"A team is building an AI feature that extracts key information from customer emails and populates a CRM. What prompt pattern is most critical?", opts:["Chain-of-thought reasoning","Structured output — JSON or defined format mapping to CRM fields","Longer system prompts","Asking the model to be creative"], a:1, fb:"When AI output feeds into another system, structured output is non-negotiable. JSON with defined field names is the standard approach."},
+      {q:"Why do few-shot examples typically outperform written instructions?", opts:["Examples use fewer tokens","Models are pattern-matching systems — showing the pattern is more direct than describing it","Instructions confuse the model","Examples only work for simple tasks"], a:1, fb:"Models infer the desired pattern from examples more reliably than from descriptions. 2–3 good examples often replace paragraphs of instruction."},
+      {q:"Which statement about prompt engineering is most accurate?", opts:["It only matters for ChatGPT","Core techniques work across all major providers — same principles, slightly different syntax","It's mainly a creative writing skill","Better models make it unnecessary"], a:1, fb:"The core techniques are provider-agnostic. This cross-provider transferability is one of AI fluency's key compounding advantages."}
+    ],
+    resources:[{l:"Anthropic Prompt Engineering Guide",u:"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview"},{l:"Prompting M365 Copilot",u:"https://learn.microsoft.com/en-us/training/paths/craft-effective-prompts-copilot-microsoft-365/"},{l:"DeepLearning.ai: Prompt Engineering",u:"https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/"}]
+  },
+  {id:6, track:1, num:"M06", title:"Multimodal AI", hook:"AI doesn't just read anymore. It sees, hears, and understands documents. The use cases this unlocks are enormous.", concept:`<p><strong>Multimodal AI</strong> processes multiple input types — text, images, audio, video, and documents. This shift dramatically expands enterprise use cases.</p><p><strong>Vision:</strong> GPT-4o, Claude, and Gemini analyze images with sophistication — reading text in images, interpreting charts, analyzing architectural drawings, identifying defects in photos. For enterprise teams: compliance document photos, equipment inspection images, whiteboard captures, UI screenshots.</p><p><strong>Documents:</strong> Models natively process PDFs, Word files, spreadsheets, and presentations — understanding structure: headers, tables, footnotes, figures. Ask Claude to "find all payment terms in this 80-page contract" — it can do this without you extracting text first.</p><div class="highlight"><strong>Audio:</strong> Whisper-class models (including Azure AI Speech) transcribe audio with high accuracy across dozens of languages. The enterprise impact: every meeting, call, and voice note becomes searchable, summarizable, and analyzable. Teams using AI-powered meeting notes in Teams report saving 30–60 minutes per person per week.</div><p><strong>Azure AI Vision:</strong> Handles image analysis, OCR, object detection, and spatial analysis. Used in manufacturing (defect detection), retail (shelf analysis), healthcare (document processing), and public sector (form processing).</p><p><strong>Cost note:</strong> Images count as tokens — typically 100–600 tokens per image depending on resolution. Factor vision costs into enterprise use case modeling.</p>`, takeaways:["Multimodal AI processes text, images, audio, documents, and video — expanding use cases far beyond text","Document understanding is native — models understand structure, tables, figures, and cross-references","Vision capabilities are production-ready in Azure AI Vision and natively in GPT-4o, Claude, and Gemini","Audio transcription via Azure AI Speech converts all spoken content into AI-accessible data","Images count as tokens — factor vision costs into enterprise use case modeling"], dyk:`Microsoft Teams' AI-powered meeting recap — which summarizes meetings, generates action items, and answers 'what did I miss?' — was used in over 1 billion meetings in its first year. It combines Azure AI Speech (transcription), Azure OpenAI (summarization), and Microsoft Graph (calendar and identity context).`, handson:{title:"Test Multimodal Capabilities", type:"exercise", steps:["Open Microsoft Copilot (copilot.microsoft.com — no login needed)","Upload a screenshot, a photo of a whiteboard, or any image with text. Ask: 'What does this show? Summarize the key information.'","Upload a PDF. Ask: 'What are the 3 most important points?' then 'What questions does this leave unanswered?'","If the document has tables, ask: 'Compare the numbers in the first table to those in the last table. What changed?'","What surprised you? What did it get right that you didn't expect? What did it miss? Think about which of these capabilities would save your team the most time if used regularly."]}, quiz:[{q:"A manufacturer wants AI to inspect product photos for defects at the assembly line. Which Microsoft capability is most relevant?", opts:["Azure OpenAI text models","Azure AI Vision with custom vision models trained on defect examples","Microsoft Copilot in Teams","GitHub Copilot"], a:1, fb:"Azure AI Vision supports custom vision models trained on your specific defect categories — designed for production-line inspection at scale."},{q:"Why should images be factored into token cost estimates?", opts:["Images don't count as tokens","Images are processed as pixels","Image inputs are typically 100–600 tokens per image — meaningful cost at scale","Image processing is billed separately"], a:2, fb:"A high-resolution image can add 500+ tokens to a call. For a use case processing thousands of images daily, this meaningfully changes the cost model."}], resources:[{l:"Azure AI Vision",u:"https://learn.microsoft.com/en-us/training/modules/fundamentals-azure-ai-vision/"},{l:"Azure AI Speech",u:"https://azure.microsoft.com/en-us/products/ai-services/ai-speech"}]},
+  {id:7, track:1, num:"M07", title:"Agents & Tool Use", hook:"A chatbot answers questions. An agent gets things done. Here's the difference.", concept:`<p>An <strong>AI agent</strong> = model + tools + memory + loop. Instead of a single prompt → response, an agent plans, calls tools, evaluates results, and repeats until the task is complete.</p><p><strong>Tool use / function calling:</strong> The model can decide to call external functions — search the web, query a database, send an email, create a calendar event. You define a function schema (name, description, parameters). The model reads it and decides whether and how to call it. If a user asks "book me a flight to Chicago next Tuesday," an agent with travel API access calls that API with extracted parameters.</p><div class="highlight"><strong>When to use an agent vs. a prompt:</strong> Use a prompt for single-turn tasks where the output is clear and context is complete. Use an agent when the task requires multiple steps, real-world actions, conditional logic based on intermediate results, or coordination across multiple tools. Most enterprise use cases start as prompts and graduate to agents as complexity grows.</div><p><strong>Guardrails are non-negotiable:</strong> Agents that can take actions can cause real damage. An agent with email access that misunderstands an instruction could send to the wrong people. Production agents require: explicit action limits, human confirmation for high-stakes actions, comprehensive logging, graceful failure handling, and regular evaluation.</p><p><strong>Microsoft's agent ecosystem:</strong> Copilot Studio (low-code, no engineering required), Azure AI Foundry Agent Service (pro-code, full control), Microsoft 365 Agents SDK (enterprise multi-agent systems).</p>`, takeaways:["An agent = model + tools + memory + loop — it plans, acts, evaluates, and repeats","Function calling lets models call external APIs — the model decides when and how based on the task","Use prompts for single-turn tasks; use agents for multi-step tasks requiring tools or conditional logic","Guardrails are non-negotiable: action limits, human confirmation for high stakes, comprehensive logging","Microsoft's agent tools span Copilot Studio (no-code), Azure AI Foundry (pro-code), and M365 Agents SDK (enterprise)"], dyk:`Microsoft has reportedly automated thousands of internal processes with AI agents — from IT ticket routing to code review to procurement approvals. One example: an agent that monitors Azure service health, identifies patterns that historically preceded incidents, and proactively pages engineering teams before customer-facing impact.`, handson:{title:"Build Your First Agent in Copilot Studio", type:"exercise", steps:["Go to copilotstudio.microsoft.com (free trial available)","Click 'Create' and choose to create a new agent","Give it a clear name and purpose — e.g., 'IT Policy Assistant'","Add one knowledge source — paste a URL or type a short policy document","Set a system prompt: 'You are an IT support assistant. Only answer questions based on your knowledge sources. If a question is outside scope, say so.'","Test with 5 questions — 3 in-scope, 2 out-of-scope. How does it handle the boundaries?"]}, quiz:[{q:"What technical mechanism allows an AI agent to call external APIs?", opts:["The model searches the internet autonomously","Function calling — the developer defines functions the model can invoke, and the model decides when to use them","The agent runs code independently","Web scraping"], a:1, fb:"Function calling is the core mechanism. The developer describes tools in a schema; the model decides whether and how to invoke them based on the task."},{q:"When is an agent the right choice over a simple prompt?", opts:["Always — agents are more capable","When tasks require multiple sequential steps, tool calls, and evaluation of intermediate results","Only for tasks longer than 10 minutes","When the model needs to access the internet"], a:1, fb:"Agents are right for multi-step tasks with tool dependencies. Single-turn tasks with complete context work better as prompts."}], resources:[{l:"Microsoft Learn: Build AI Agents",u:"https://learn.microsoft.com/en-us/training/paths/develop-ai-agents-azure/"},{l:"Copilot Studio Docs",u:"https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio/"}]},
+  {id:8, track:1, num:"M08", title:"RAG: Grounding AI in Your Data", hook:"AI knows everything that's public. It knows nothing that's yours. RAG fixes that.", concept:`<p><strong>RAG — Retrieval-Augmented Generation</strong> — is the most important pattern in enterprise AI. It bridges the gap between what a model learned during training (public internet, up to a cutoff) and what your organization needs it to know (internal documents, current data, proprietary knowledge).</p><p>Without RAG, asking AI about your company's Q4 pricing strategy, your customer's contract terms, or last week's product update produces one of two outcomes: a hallucination (confident wrong answer) or a refusal. Neither is useful.</p><p><strong>The three steps:</strong><br>
+<strong>Step 1 — Index:</strong> Documents are chunked and converted into <strong>embeddings</strong> — numerical representations of semantic meaning — stored in a <strong>vector database</strong> (like Azure AI Search).<br>
+<strong>Step 2 — Retrieve:</strong> When a user asks a question, it's also converted to an embedding and compared to your vector database using similarity search. The most semantically relevant chunks are retrieved — not by keyword, but by meaning.<br>
+<strong>Step 3 — Augment and Generate:</strong> Retrieved chunks are injected into the model's prompt: "Answer based on the following from our knowledge base: [chunks]." The model generates a response grounded in your actual content. Hallucination risk drops dramatically.</p><div class="highlight"><strong>Why RAG beats fine-tuning for most enterprise use cases:</strong> Fine-tuning is expensive, slow to update, and hard to audit. RAG is cheaper, updatable in near real-time, and every answer is traceable to source documents. The only cases fine-tuning wins: highly consistent style at massive scale, and domain vocabulary the model fundamentally doesn't know.</div><p><strong>RAG in the Microsoft ecosystem:</strong> The <strong>M365 Copilot Retrieval API</strong> does exactly this — RAG over your SharePoint, OneDrive, and M365 content. Azure AI Search is Microsoft's enterprise vector database with semantic search and hybrid retrieval built in.</p>`, takeaways:["RAG = retrieve relevant chunks → inject into prompt → generate grounded response","Vector embeddings enable semantic search — finding content by meaning, not just keywords","RAG is cheaper, more current, and more auditable than fine-tuning for most enterprise knowledge use cases","Azure AI Search is Microsoft's enterprise vector database — built into the Microsoft AI stack","The M365 Copilot Retrieval API is RAG over your SharePoint and OneDrive — every grounded Copilot answer uses this pattern"], dyk:`A 2024 Microsoft Research study found that RAG-based systems reduced hallucination rates by 67% compared to the same model without retrieval on enterprise knowledge tasks. The combination of strong retrieval and strong generation is more reliable than either component alone.`, handson:{title:"Experience RAG Firsthand", type:"exercise", steps:["Open Google NotebookLM at notebooklm.google.com (free)","Upload 3 documents — reports, policies, or any PDFs you have","In-scope test: Ask 3 questions only those documents can answer. Note which document it cited.","Out-of-scope test: Ask something the documents can't answer. Does it hallucinate or acknowledge the limit?","Cross-document test: Ask a question requiring synthesis across 2 or more documents.","Think about the difference between this and just asking a general LLM the same questions. What made the grounded answers better? What would it take to deploy this pattern on your team's actual knowledge base?"]}, quiz:[{q:"In a RAG system, what is the role of vector embeddings?", opts:["They compress documents to save storage","They convert text into numerical representations capturing semantic meaning — enabling similarity-based retrieval","They encrypt documents","They translate between languages"], a:1, fb:"Embeddings convert text to vectors where semantically similar content has similar values. This enables retrieval by meaning — 'payment terms' finds 'invoicing conditions' even without keyword overlap."},{q:"Why is RAG more appropriate than fine-tuning for a legal team's case history Q&A?", opts:["RAG is always better","RAG allows the knowledge base to update as new cases are added, keeps responses traceable, and is significantly cheaper to maintain","Fine-tuning doesn't work for legal text","RAG produces better answers on all benchmarks"], a:1, fb:"For a continuously growing knowledge base, RAG's ability to update by re-indexing new documents — without retraining — is decisive. Traceability to source documents is also critical for legal work."}], resources:[{l:"LangChain RAG Tutorial",u:"https://python.langchain.com/docs/tutorials/rag/"},{l:"Pinecone RAG Guide",u:"https://www.pinecone.io/learn/series/rag/"},{l:"Azure AI Search",u:"https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search"}]},
+  {id:9, track:1, num:"M09", title:"Fine-Tuning & Custom Models", hook:"Fine-tuning sounds like the answer to everything. It rarely is. Here's when it actually makes sense.", concept:`<p><strong>Fine-tuning</strong> continues training a pre-trained model on your own dataset, adjusting its weights to improve performance on specific tasks, styles, or domains. It's the most direct way to bake your organization's knowledge into a model — but comes with costs that make it wrong for most enterprise use cases.</p><p><strong>The correct order of operations:</strong> Start with prompt engineering. If that doesn't achieve your quality target, try RAG (if knowledge is the gap). Fine-tune only if both have failed and you have: a clear quality metric, at least 500 high-quality labeled examples, engineering resources to maintain it, and a stable use case that won't need frequent retraining.</p><div class="highlight"><strong>The three cases where fine-tuning genuinely wins:</strong><br>
+1. <strong>Style and tone consistency at scale</strong> — when you need every response to sound exactly like your brand voice and no prompt can reliably produce it<br>
+2. <strong>Domain-specific vocabulary</strong> — rare medical conditions, niche legal concepts, proprietary technical terminology the base model doesn't know<br>
+3. <strong>Massive scale cost optimization</strong> — a fine-tuned smaller model can match a larger model's quality on specific tasks at a fraction of the inference cost at millions of calls daily</div><p><strong>The full loop:</strong> Data preparation → training → evaluation → deployment → maintenance. The maintenance part is what teams underestimate: every time the provider releases a new base model version, you may need to re-fine-tune. Every new product feature means new training data.</p>`, takeaways:["The correct order: prompt engineering → RAG → fine-tuning (try each before escalating)","Fine-tuning wins in three cases: style consistency at scale, rare domain vocabulary, massive-scale cost optimization","Data quality in fine-tuning training sets matters more than quantity — 500 excellent examples beat 5,000 poor ones","Fine-tuned models require ongoing maintenance as base models update — factor this into TCO","Start with fine-tuning only when you have a clear quality metric and a stable use case"], dyk:`GitHub Copilot's code completion model is a highly fine-tuned version of a foundation model, trained on billions of lines of public code from GitHub. The fine-tuning is what makes it dramatically better at code than a general-purpose LLM using only prompts — one of the clearest examples where fine-tuning delivers genuine value.`, handson:{title:"Compare Base vs Fine-Tuned Models", type:"exercise", steps:["Go to Azure AI Foundry at ai.azure.com (sign in with Microsoft work account)","Navigate to the Model Catalog","Search for 'Llama' or 'Mistral' — find a base model and a fine-tuned variant in the same family","Compare benchmark scores, recommended use cases, context window, and pricing","Open Microsoft Copilot and ask: 'Explain the difference between a base model and a fine-tuned model, and give me 3 examples of when fine-tuning is the right choice' — use Copilot as your research assistant","For your team's primary AI use case — think through whether prompt engineering, RAG, or fine-tuning is the right approach. What's the one factor that would change your answer?"]}, quiz:[{q:"A company wants AI to answer customer questions about their product, with 500 support transcripts available. Best starting approach?", opts:["Immediately fine-tune a model","Use RAG with the transcripts as the knowledge base plus prompt engineering for the support persona","Build a custom model from scratch","Use only the base model with no customization"], a:1, fb:"RAG with well-designed prompts is the right first step — cheaper, faster to deploy, updatable as products change, and achieves good quality for knowledge-based Q&A."},{q:"A fintech company processes 10M AI-powered categorizations/day. A fine-tuned smaller model matches frontier accuracy on this specific task. Why might fine-tuning be justified?", opts:["Fine-tuning is always better for financial data","At 10M calls/day, the cost difference between frontier and fine-tuned could be hundreds of thousands monthly — making fine-tuning economically compelling","The smaller model is always more accurate","Compliance requires it"], a:1, fb:"This is the massive scale cost optimization case. When a fine-tuned smaller model matches quality at 5-10x lower inference cost at millions of calls daily, the economics clearly favor fine-tuning."}], resources:[{l:"OpenAI Fine-Tuning Guide",u:"https://platform.openai.com/docs/guides/fine-tuning"},{l:"Hugging Face NLP Course",u:"https://huggingface.co/learn/nlp-course/chapter1/1"},{l:"Azure AI Foundry",u:"https://ai.azure.com"}]},
+  {id:10, track:1, num:"M10", title:"AI in Production", hook:"Demo to deployment is the hardest gap in AI. Most projects fail here — not in the model.", concept:`<p>Every AI project looks great in a demo. The demo uses a curated input, runs once. Production runs thousands of times per day on messy real-world inputs and needs monitoring, maintenance, and debugging when behavior is unexpected. The skills required to go from demo to production are different — and they're the ones most teams lack.</p><p><strong>Evals — the most important thing most AI teams skip:</strong> An <strong>evaluation set</strong> is a collection of test inputs with defined expected outputs. Without evals, you can't know if your system is getting better or worse with each change. Eval design: cover the real distribution of inputs, include adversarial examples, define success metrics specifically ("the output includes the required action item, is under 100 words, and contains no hallucinated facts"), and run automatically before every deployment.</p><div class="highlight"><strong>Observability:</strong> Every production AI call should log: input prompt, model used, response, token counts, latency, cost, and any errors. Without logs, when something goes wrong (and it will), you have no way to understand what happened. Azure AI Foundry includes built-in observability. A feature costing $0.01/call running 50,000 times/day = $15,000/month. Monitor token spend per feature and alert when costs spike unexpectedly.</div><p><strong>Output drift and model updates:</strong> AI models change. Providers update base models, adjust safety filters, modify default behaviors. A feature that worked perfectly last month may behave differently after a silent model update. Scheduled eval runs catch regressions. Pinning to specific model versions (e.g., gpt-4o-2024-08-06) provides stability at the cost of not getting automatic improvements.</p><p><strong>Human oversight:</strong> For high-stakes outputs — medical advice, legal interpretation, financial decisions — human review is not optional. The most reliable production AI systems are human-AI collaborative: AI does the heavy lifting, humans review the high-risk outputs. This isn't AI failure — it's responsible engineering.</p>`, takeaways:["Evals are the foundation of production AI — without them, you cannot know if your system is improving or degrading","Observability (logging every call) is required for debugging, optimization, and demonstrating business value","Token costs at production scale require active monitoring — small per-call costs compound dramatically","Model updates from providers can silently change behavior — version pinning and scheduled eval runs catch regressions","Human oversight checkpoints for high-stakes outputs are responsible engineering, not a limitation"], dyk:`A study of 400 enterprise AI deployments found that 60% of technically successful AI pilots failed to reach full production. The top three reasons: no systematic evaluation framework, no observability, and no cost management plan. The technology worked — the production engineering layer didn't.`, handson:{title:"Design an Eval Set", type:"exercise", steps:["Pick any AI feature — real or hypothetical: a meeting summary tool, email draft assistant, policy Q&A bot, or code comment generator","Write 10 test inputs covering the realistic range: 3 easy cases, 3 moderately complex, 2 edge cases, 1 hallucination probe, 1 adversarial input","For each input, define what 'good' looks like specifically — not 'helpful' but: includes X, doesn't include Y, is under Z words, doesn't contradict source","Score your current prompt against the eval set: how many of the 10 pass?","What did designing this eval set reveal about what you actually want the AI to do? Did any edge cases surface that you hadn't thought of? That surprise is the whole point of the exercise."]}, quiz:[{q:"A team deployed an AI feature and noticed quality dropped last week but can't determine what changed. What production capability were they missing?", opts:["A better model","Observability — without logging inputs, outputs, and model versions, they cannot diagnose what changed or when","More training data","A larger context window"], a:1, fb:"Without logs, production AI systems are black boxes. You can't tell if quality dropped due to a model update, prompt change, input shift, or something else."},{q:"Why is 'the output seems good' insufficient as a success criterion?", opts:["It's too subjective","It's not measurable, doesn't cover edge cases, and can't be automated — making it impossible to systematically detect regressions","AI outputs are always objectively measurable","Qualitative assessment is more accurate"], a:1, fb:"'Seems good' can't be run automatically, doesn't specify which dimensions matter, and varies by evaluator. Concrete criteria (length, content requirements, prohibited content, factual accuracy) can be tested at scale."},{q:"An AI feature costs $0.008/call. The team expects 100,000 calls/day at production volume. Monthly cost estimate?", opts:["$24/month — negligible","$800/month","$24,000/month — requires budgeting and optimization from day one","$240/month"], a:2, fb:"$0.008 × 100,000 × 30 = $24,000/month. At this scale, cost tracking, budget allocation, and optimization strategies are standard engineering requirements."}], resources:[{l:"Azure AI Foundry Evals",u:"https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-approach-gen-ai"},{l:"Azure AI Observability",u:"https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"}]},
+
+  // ── TRACK 2 ──
+  {id:11, track:2, num:"M11", title:"The AI Maturity Model", hook:"Not every org is ready for AI. Most think they are. Here's how to tell the difference in 15 minutes.", concept:`<p>The ability to quickly diagnose where an organization actually is on its AI journey — not where it thinks it is — is one of the most important skills in enterprise AI conversations.</p><p><strong>The 5 stages:</strong><br>
+<strong>Stage 1 — Ad Hoc:</strong> Individual experimentation, no strategy. People use ChatGPT on personal devices. IT doesn't know. No governance, no data strategy.<br>
+<strong>Stage 2 — Aware:</strong> Leadership recognizes AI's importance. Pilots starting. Budget for exploration. But: no governance, no data strategy, no org-wide AI owner. <em>Most enterprise customers are here.</em><br>
+<strong>Stage 3 — Operative:</strong> Structured AI programs. Some use cases in production. A Center of Excellence forming. Data strategy work underway. Governance policies being written.<br>
+<strong>Stage 4 — Systematic:</strong> AI integrated into core workflows. Governance in place. ROI measured systematically. AI literacy training for all employees. Repeatable process for identifying, piloting, and scaling use cases.<br>
+<strong>Stage 5 — AI-Native:</strong> AI is a competitive differentiator. Culture, products, and processes built around AI from the start. Think Microsoft, Google, Amazon.</p><div class="highlight"><strong>Diagnostic signals that reveal actual vs. claimed maturity:</strong><br>
+Ask Stage 2 companies "who owns AI in your org?" → blank stare or three different answers<br>
+Ask Stage 3 companies "how do you measure AI ROI?" → pilot metrics, not enterprise metrics<br>
+Ask Stage 4 companies about failed AI projects → they have a list and learned from each one<br>
+The gaps between what organizations say and what they can demonstrate is where the real conversation begins.</div><p><strong>Why maturity matters for Microsoft conversations:</strong> A Stage 2 customer needs education and a quick win pilot. A Stage 3 customer needs a scaling strategy and governance framework. A Stage 4 customer wants to discuss platform consolidation and ROI optimization. Pitching the same message to all three stages is why deals stall.</p>`, takeaways:["The 5 stages: Ad Hoc → Aware → Operative → Systematic → AI-Native — most enterprise customers are at Stage 2–3","Claimed maturity and actual maturity often differ significantly — diagnostic questions reveal the gap","Each stage requires a different conversation: education (Stage 2), scaling strategy (Stage 3), optimization (Stage 4)","Governance, data strategy, and measurement are better maturity signals than number of AI projects","Meeting customers at their actual maturity stage is the difference between deals that close and those that stall"], dyk:`A 2024 survey of 500 enterprises found that while 90% of executives said AI was a strategic priority, only 23% had an enterprise-wide AI governance framework and only 18% systematically measured AI ROI across their deployments. The aspiration to be AI-native is widespread. The operational capability to get there is much rarer.`, handson:{title:"Score Your Organization", type:"exercise", steps:["Rate your organization honestly (1–5) on 5 dimensions:","1. AI Strategy Clarity: Is there a clear, communicated enterprise AI strategy?","2. Data Readiness: Is your data accessible, clean, governed, and usable for AI?","3. Governance & Policy: Are there clear policies for responsible AI use and deployment approval?","4. Talent & Skills: Do you have the people to build and maintain AI? Is AI literacy spreading?","5. Culture of Experimentation: Are AI experiments celebrated even when they fail?","Add scores: 5–10 = Stage 1–2. 11–17 = Stage 3. 18–22 = Stage 4. 23–25 = Stage 5. Write your one biggest gap."]}, quiz:[{q:"A large retailer has 15 active AI pilots across the company. What maturity stage does this suggest?", opts:["Stage 5 — AI-native","Stage 3 — next conversation is about scaling the pilots that worked, governance for enterprise deployment, and systematic ROI measurement","Stage 1 — pilots aren't real AI","Stage 4 — 15 pilots indicates systematic adoption"], a:1, fb:"15 pilots without mentioned governance or ROI measurement is a classic Stage 3 pattern. The value conversation is about moving from 15 experiments to 3 scaled, measured programs."},{q:"An enterprise customer says they're 'all-in on AI' but can't answer 'who owns AI in your organization?' What does this signal?", opts:["Stage 4 — ownership is distributed intentionally","Stage 2 — leadership awareness without organizational ownership is a classic Stage 2 pattern","Stage 1 — they're not actually doing AI","Stage 3 — AI ownership is always distributed at this stage"], a:1, fb:"Inability to name an AI owner is a strong Stage 2 signal. Leadership enthusiasm without clear ownership, governance, or accountability means the org is aware but hasn't operationalized."}], resources:[{l:"Microsoft AI Transformation Hub",u:"https://learn.microsoft.com/en-us/ai/"}]},
+  {id:12, track:2, num:"M12", title:"Finding the Right Use Cases", hook:"The biggest AI mistake orgs make isn't picking the wrong model. It's solving the wrong problem.", concept:`<p>Use cases that create the most enterprise value are almost never the most exciting-sounding ones. They're the ones that are high-volume, knowledge-intensive, and tolerant of imperfection.</p><p><strong>The three characteristics of a strong AI use case:</strong><br>
+<strong>1. High volume:</strong> Done frequently — daily or weekly by many people. AI ROI is driven by repetition.<br>
+<strong>2. Language or pattern-heavy:</strong> Involves reading, writing, classifying, summarizing, or finding information. AI is extraordinary at these tasks.<br>
+<strong>3. Tolerant of imperfection:</strong> An 85% accurate AI assistant saving 30 minutes per task is enormously valuable. An 85% accurate AI making medical diagnoses without human review is dangerous.</p><div class="highlight"><strong>The Impact vs. Feasibility 2×2:</strong><br>
+High Impact + High Feasibility = <strong>Start here</strong>. Quick wins that build confidence and prove value.<br>
+High Impact + Low Feasibility = Plan for it. These need data work before they're ready.<br>
+Low Impact + High Feasibility = Skip it. Easy wins with no meaningful business outcome burn goodwill.<br>
+Low Impact + Low Feasibility = Never discuss these.</div><p><strong>Use cases that surface in almost every organization:</strong> Meeting notes and action item extraction. Email drafting assistance. Document summarization. Policy Q&A. Code comment and documentation generation. Customer inquiry triage.</p><p><strong>What to avoid:</strong> Use cases requiring real-time data you don't have. Tasks involving regulated decisions without a human oversight layer. Processes where errors are catastrophic and irreversible.</p>`, takeaways:["Strong AI use cases are high-volume, language-heavy, and tolerant of imperfection","The Impact vs. Feasibility 2×2 gives a systematic prioritization framework: start with high-impact, high-feasibility","Low-impact, high-feasibility use cases are traps — easy wins with no meaningful business outcome","The same 5–7 use cases surface in almost every enterprise because they consistently meet all three criteria","Stakes of being wrong determine appropriate autonomy — AI assists humans for high-stakes decisions"], dyk:`McKinsey's 2024 AI index found the top 5 value-creating AI use cases are: customer service automation, marketing personalization, software development assistance, document processing, and supply chain optimization. Four of five are high-volume, language-pattern tasks — exactly what LLMs excel at.`, handson:{title:"Use Case Prioritization Matrix", type:"exercise", steps:["Brainstorm 8–10 potential AI use cases for your team. Don't filter yet.","For each, score on Impact (1–5) and Feasibility (1–5)","Plot on a 2×2: Impact vertical, Feasibility horizontal. Which quadrant has your Quick Wins?","For your top-scoring use case: what data does it need? Is that data available today? Who owns it?","Write a one-sentence pitch: 'We can [do X] using AI, which would [business outcome], by [approach].'"]}, quiz:[{q:"A healthcare company wants AI to automatically approve or deny insurance claims without human review. What is the most significant concern?", opts:["The technology isn't capable enough","Low tolerance for imperfection — claim decisions are high-stakes, regulated, and potentially irreversible, requiring human oversight","It's not high-volume enough","It's too technically complex"], a:1, fb:"High-stakes irreversible decisions require human oversight regardless of AI accuracy. An 85% accurate autonomous claims system means 15% wrongly decided without human check — both a regulatory violation and an ethical failure."},{q:"Why are 'low impact, high feasibility' use cases dangerous for AI programs?", opts:["They're technically difficult","They consume resources, build executive skepticism, and burn goodwill needed for high-impact deployments","They violate responsible AI principles","They always fail in production"], a:1, fb:"Teams that build too many low-value AI tools often find executive sponsors losing interest. Protecting the program's credibility by focusing on high-impact use cases is strategic as much as technical."}], resources:[{l:"Microsoft AI Use Cases",u:"https://learn.microsoft.com/en-us/ai/"}]},
+  {id:13, track:2, num:"M13", title:"The Real Cost of AI", hook:"The API bill is the smallest part of what AI costs. Here's the full picture.", concept:`<p>Organizations that get surprised by AI costs are almost always the ones that modeled only the API bill. Technology costs (API tokens, hosting, compute) are typically 20–30% of the total.</p><p><strong>The five cost categories:</strong><br>
+<strong>1. Compute & Infrastructure (20–30%):</strong> API token costs, hosting, vector database storage, monitoring. Easiest to estimate. Don't underestimate scale: 10,000 employees × 50 AI calls/day × $0.005/call = $25,000/day.<br>
+<strong>2. Data Preparation (15–25%):</strong> Cleaning, labeling, structuring, connecting data sources. For RAG: indexing pipelines, chunking logic, embedding jobs. Most underestimated category.<br>
+<strong>3. People (30–40%):</strong> Engineers, prompt engineers, product managers, security reviewers, change management specialists, help desk staff, training programs. <em>Usually the largest category, and the one most often forgotten.</em><br>
+<strong>4. Governance & Compliance (10–15%):</strong> Legal review, compliance assessments, privacy impact assessments, bias audits, security testing. Non-negotiable in enterprise environments.<br>
+<strong>5. Maintenance & Operations (10–20% annually):</strong> Re-fine-tuning, prompt iterations as outputs drift, eval expansion, user support, integration updates.</p><div class="highlight"><strong>A realistic example:</strong> A company deploys AI meeting summary for 5,000 employees.<br>
+Compute: $180,000/year · Data prep: $50,000 · People: $400,000 · Governance: $60,000 · Year 1 maintenance: $80,000<br>
+<strong>Total: ~$770,000 for Year 1.</strong> API cost alone would have suggested $180,000. Honest TCO is 4× that.</div>`, takeaways:["Technology costs (API, compute) are typically only 20–30% of total AI deployment cost","People costs are the largest single category — engineers, change management, training, and support","Data preparation is the most underestimated category — it often exceeds compute costs in Year 1","Governance and compliance costs are non-negotiable, especially in regulated industries","Annual maintenance adds 10–20% of Year 1 cost every year — don't leave it out of multi-year projections"], dyk:`A 2023 analysis of 50 enterprise AI deployments found that the average organization underestimated total AI deployment cost by 3.2×. The biggest gaps: people costs (underestimated by 2.5×), change management (underestimated by 4×), and ongoing maintenance (often not budgeted at all).`, handson:{title:"Build a Realistic TCO Estimate", type:"exercise", steps:["For your top use case from M12, build a 12-month total cost estimate across all 5 categories","Compute: estimate daily calls × cost per call × 365 days","Data: what needs to be prepared, connected, or cleaned? Estimate hours × fully-loaded cost/hour","People: how many engineers? Part-time or full-time? What else is needed (PM, change management)?","Governance: budget $20,000–$100,000 depending on industry regulation level","Maintenance: estimate 15% of the above total","Sum the 5 categories. How does this compare to API cost alone? What's the ratio?"]}, quiz:[{q:"A team estimates $50,000/year in API costs. Using five-category TCO, what is a realistic Year 1 total?", opts:["$50,000","$75,000–$100,000","$150,000–$250,000","$500,000+"], a:2, fb:"If API costs are 20–30% of total, $50K in API implies $150K–$250K total. This is the pattern seen consistently across enterprise AI deployments."},{q:"Which cost category is most commonly underestimated?", opts:["Compute and infrastructure","People costs — engineers, change management, training, and ongoing support","Governance and compliance","Data preparation"], a:1, fb:"People costs are consistently most underestimated. Teams budget for engineers but forget prompt engineers, change management specialists, help desk support, training programs, and ongoing user success management."}], resources:[{l:"Azure Pricing Calculator",u:"https://azure.microsoft.com/en-us/pricing/calculator/"}]},
+  {id:14, track:2, num:"M14", title:"Building the Business Case", hook:"A great AI idea dies without a great business case. Here's how to build one that survives a CFO.", concept:`<p>Most AI business cases fail not because the idea is bad but because they focus on capability rather than value, use percentages instead of dollars, and lack a credible measurement plan.</p><p><strong>The four-component structure:</strong></p><p><strong>1. The Problem (specific and costly):</strong> Not "our support team is overwhelmed" but: "Our team handles 15,000 tickets/month. Average handle time is 11 minutes. Our 45 agents cost $2.1M annually. 35% of tickets are answerable from existing documentation."</p><p><strong>2. The Solution (process change, not technology):</strong> "We deploy a Copilot-powered self-service agent that handles the 35% of documentation-answerable tickets automatically. For the remaining 65%, it drafts a suggested response that agents review and send, reducing handle time from 11 to 7 minutes."</p><p><strong>3. The Return (dollars, not percentages):</strong> "35% automation × 15,000 tickets × 11 min × $45/hr = $577,500/yr. 65% assisted × 4 min saved × 15,000 × $45/hr = $293,000/yr. Total: $870,000/year." CFOs work in dollars. Give them dollars.</p><div class="highlight"><strong>4. The Measurement Plan (define success before deployment):</strong> "We will measure: (a) automation rate — target 32% in Month 1, 37% by Month 3; (b) handle time for assisted tickets — target 7.5 min by Month 2; (c) CSAT — maintain 4.2/5 baseline." Defining measurements before deployment protects you from retrospective goal-shifting and creates an early warning system.</div><p><strong>Common mistakes:</strong> "AI will improve productivity by 30%" — without specifying what activity, how measured, timeframe. Omitting change management (the most common reason technically sound projects fail to get approved). Using competitor announcements as business case evidence. Underestimating TCO (use M13).</p>`, takeaways:["Four components: specific problem, solution framed as process change, dollar-denominated return, pre-defined measurement plan","CFOs work in dollars — convert productivity gains and time savings into annual dollar figures","Define success metrics BEFORE deployment — retrospective goal-setting is how failed projects get redefined as successes","Omitting change management is the most common reason sound AI projects fail to get approved","Use the M13 five-category TCO — business cases built on API cost alone will be rejected as unrealistic"], dyk:`Forrester Research found that well-constructed AI business cases — with specific dollar ROI, pre-defined metrics, and realistic cost models — are approved 3.2× more often than vaguely-framed 'strategic' AI investments. The single biggest differentiator: having a measurement plan defined before deployment.`, handson:{title:"Draft a One-Page Business Case", type:"exercise", steps:["Using your M12 use case and M13 TCO, write a one-page business case","Component 1 — The Problem: 3–4 sentences with specific numbers (volume, time, cost, frequency)","Component 2 — The Solution: Describe the process change in business language. No AI jargon.","Component 3 — The Return: Calculate the dollar value. Show your math. Be conservative.","Component 4 — The Measurement Plan: 3 specific metrics, their baseline values, and 30/90/180-day targets","Read it as if you are the CFO. What questions does it leave unanswered? Revise accordingly."]}, quiz:[{q:"'AI will improve sales team productivity by 40%.' What is the critical flaw?", opts:["40% is too high","It lacks specificity: which activities, measured how, over what timeframe, with what dollar value — making it unverifiable and unapprove-able","Sales teams can't use AI effectively","Should be expressed in dollars only"], a:1, fb:"'40% of what, measured how, by when?' Without specificity the claim can't be evaluated or held accountable to. Specific dollar math is a business case. A percentage is a hope."},{q:"Why is defining success metrics BEFORE deployment more important than measuring results AFTER?", opts:["Pre-deployment metrics are more accurate","Pre-defined metrics prevent retrospective goal-shifting, demonstrate accountability, and create an early warning system","Post-deployment measurement is less reliable","Finance teams require it by policy"], a:1, fb:"Post-deployment goal-shifting is endemic in AI programs. Pre-defining metrics commits you to specific criteria that can't be moved when results disappoint."}], resources:[{l:"Microsoft AI ROI Resources",u:"https://learn.microsoft.com/en-us/ai/"}]},
+  {id:15, track:2, num:"M15", title:"Data Strategy for AI", hook:"Your data is your AI moat. Most orgs don't know what data they have, where it lives, or whether it's usable.", concept:`<p>Data strategy is the conversation that must happen before any enterprise AI deployment — and it's the one most organizations skip because it's unglamorous and doesn't involve impressive demos. But data quality, accessibility, and governance determine what AI can do for you more than any other factor.</p><p><strong>The 5 data readiness questions:</strong><br>
+1. <strong>Do we have the data?</strong> Does the data needed actually exist in our systems?<br>
+2. <strong>Is it accessible?</strong> Can it be accessed programmatically, or locked in legacy systems or PDFs?<br>
+3. <strong>Is it clean?</strong> Complete, accurate, consistently formatted? What % of records have required fields?<br>
+4. <strong>Is it governed?</strong> Do we have consent to use this data for AI? Are sensitivity labels applied? Who approves access?<br>
+5. <strong>Is it current?</strong> AI grounded in stale data produces stale answers. How fresh does it need to be?</p><div class="highlight"><strong>Microsoft's data story for enterprise AI:</strong><br>
+<strong>Microsoft Fabric</strong> unifies data lakes, data warehouses, and real-time analytics with OneLake as the underlying storage layer.<br>
+<strong>Microsoft Purview</strong> provides data governance, cataloging, sensitivity labeling, and compliance management across the entire data estate — including AI usage.<br>
+Together they answer: Where is our data? Who can use it? Is it trustworthy? These are the questions that must be answered before enterprise AI can be deployed at scale.</div>`, takeaways:["Data quality and accessibility are the primary blockers for enterprise AI — not technology or budget","Five readiness questions: Does it exist? Is it accessible? Is it clean? Is it governed? Is it current?","Microsoft Fabric unifies the data estate; Microsoft Purview governs it — together they enable enterprise RAG at scale","Data locked in PDFs or legacy systems requires extraction pipelines before AI can use it","AI grounded in stale or poor-quality data amplifies those data quality issues in every output"], dyk:`A McKinsey study found enterprises spend an average of 80% of AI project time on data preparation and only 20% on model development and deployment. Teams that try to skip data prep to get to the exciting model work consistently discover this ratio the hard way.`, handson:{title:"Data Readiness Audit", type:"exercise", steps:["Pick one data source relevant to your top AI use case","Rate it on the five dimensions (1=not ready, 5=fully ready): Existence, Accessibility, Cleanliness, Governance, Currency","Identify your lowest-scoring dimension","What would it take to move it from its current score to a 4?","Who in your org owns that work? Is there a timeline?"]}, quiz:[{q:"A company's most valuable customer data is stored in a 10-year-old CRM with no API access. For AI purposes, this data is:", opts:["Fully usable — AI can read any format","Inaccessible for most AI use cases without a data extraction and migration project first","Usable for training only","Requires fine-tuning to use"], a:1, fb:"Without API access, data can't be retrieved programmatically for RAG or used in real-time AI features. An extraction pipeline is a prerequisite — and often the biggest cost driver in legacy AI projects."},{q:"Why is Microsoft Purview particularly valuable for enterprise AI deployments?", opts:["It's the fastest data processing platform","It provides governance, sensitivity labeling, and compliance management — ensuring AI systems don't access or expose data they shouldn't","It replaces Azure AI Search","It's included free with all Azure subscriptions"], a:1, fb:"Purview answers the governance questions blocking many enterprise AI deployments: can we use this data? Does it contain PII? Who accessed it? These must be answered before responsible AI deployment."}], resources:[{l:"Microsoft Fabric",u:"https://learn.microsoft.com/en-us/fabric/"},{l:"Microsoft Purview",u:"https://learn.microsoft.com/en-us/purview/"}]},
+  {id:16, track:2, num:"M16", title:"AI Governance & Policy", hook:"Moving fast with AI without guardrails isn't bold. It's a liability.", concept:`<p>Every enterprise AI deployment needs a governance framework — the policies, processes, and accountabilities that ensure AI is used responsibly, safely, and in compliance with legal requirements.</p><p><strong>Microsoft's 6 Responsible AI Principles:</strong> Fairness, Reliability & Safety, Privacy & Security, Inclusiveness, Transparency, Accountability. These translate into technical requirements: fairness testing, safety evaluations, privacy controls, accessible interfaces, explanation capabilities, and audit trails.</p><div class="highlight"><strong>The regulatory landscape (2025–2026):</strong><br>
+<strong>EU AI Act:</strong> Risk-based framework — unacceptable, high, limited, minimal risk. High-risk systems (hiring, credit, healthcare, law enforcement) require conformity assessments, human oversight, and transparency documentation.<br>
+<strong>GDPR:</strong> Limits training on EU personal data, requires lawful basis for AI processing, includes rights to explanation for automated decisions.<br>
+<strong>US Executive Orders:</strong> Safety testing and reporting requirements for frontier models, sector-specific guidance in finance, healthcare, critical infrastructure.<br>
+<strong>Industry-specific:</strong> HIPAA (healthcare), SOX (financial reporting), FINRA (financial advice) impose additional requirements.</div><p><strong>What every enterprise AI deployment needs before go-live:</strong> A use case risk assessment. A data handling and retention policy. A human oversight plan for which decisions require human review. An audit trail capturing AI-assisted decisions. A process for employees to report AI errors. A model card documenting capabilities and limitations. Regular post-deployment bias and accuracy evaluations.</p>`, takeaways:["Microsoft's 6 Responsible AI principles translate to technical requirements: testing, controls, auditing, and oversight","The EU AI Act's risk-based framework affects any system deployed to EU users — understand the risk tiers","Every enterprise deployment needs: risk assessment, data handling policy, human oversight plan, and audit trail","Governance is a competitive advantage in regulated industries — customers ask about it and it's a common deal blocker when absent","Responsible AI is built into Microsoft's products — it's part of the product story, not just corporate values"], dyk:`A 2025 survey of 300 enterprise AI procurement decisions found that 68% of large enterprise buyers now include AI governance requirements in their vendor evaluation criteria. Three years earlier, that number was 12%. Governance has gone from nice-to-have to standard procurement requirement.`, handson:{title:"Responsible AI Assessment", type:"exercise", steps:["For your M12 use case, answer these governance questions:","1. Who could be harmed by a wrong output? List all affected stakeholders.","2. How would you detect bias? What groups might be treated differently? How would you test for this?","3. What data is being processed? Does it include PII or sensitive categories? What legal basis exists?","4. What is the human oversight plan? Which outputs require human review before action?","5. Who is accountable? Name the specific person responsible for this AI system's behavior.","If any question reveals a gap, write one sentence on how you'd address it."]}, quiz:[{q:"Under the EU AI Act, which AI systems require conformity assessment and human oversight?", opts:["All AI systems","High-risk AI systems — including hiring, credit decisions, healthcare, and law enforcement applications","Only fully automated decision systems","Only AI systems developed in the EU"], a:1, fb:"The EU AI Act uses a risk-based approach. High-risk systems (defined by use case, not technology) require the full compliance framework — including many common enterprise use cases."},{q:"Why is AI governance increasingly a competitive advantage rather than just a compliance cost?", opts:["Governance reduces API costs","Enterprise procurement teams now include governance requirements in vendor selection — organizations with mature frameworks close deals that governance-deficient competitors lose","Governance speeds development cycles","It's only an advantage in regulated industries"], a:1, fb:"Governance has shifted from 'cost of compliance' to 'requirement for enterprise sales.' Buyers ask about data handling, bias testing, audit trails, and responsible AI as part of standard due diligence."}], resources:[{l:"Microsoft Responsible AI",u:"https://learn.microsoft.com/en-us/training/modules/introduction-to-microsofts-responsible-ai-approach/"}]},
+  {id:17, track:2, num:"M17", title:"Change Management for AI", hook:"The technology almost never fails. The people part almost always does.", concept:`<p>The most common AI deployment failure mode isn't a model accuracy problem or infrastructure failure. It's adoption failure — the tool works, but people don't use it, use it badly, or actively resist it.</p><p><strong>Why AI change management is uniquely hard:</strong> Traditional software changes a process. AI changes judgment. When AI replaces or augments human decision-making, it touches identity ("am I still valuable?"), trust ("can I rely on this?"), and accountability ("who's responsible when it's wrong?"). These emotional dimensions don't exist in traditional ERP rollouts.</p><p><strong>The fear of displacement is the hidden blocker:</strong> Employees rarely say "I'm afraid AI will take my job" openly. Instead: "the outputs aren't accurate enough," "I don't trust it," or "it takes longer to verify than to do myself." These are often proxies for job security anxiety. Change management that doesn't address this directly will fail regardless of technology quality.</p><div class="highlight"><strong>What actually works:</strong><br>
+1. <strong>Start with champions, not mandates</strong> — find the 10–15% enthusiastic early adopters, train them deeply, let success spread organically<br>
+2. <strong>First use case must benefit individuals</strong> — if AI saves the employee time on things they hate, they'll trust it faster<br>
+3. <strong>Create psychological safety around failure</strong> — error reporting should be praised, not penalized<br>
+4. <strong>Train continuously, not once</strong> — monthly workshops and peer coaching sustain adoption<br>
+5. <strong>Redefine roles publicly</strong> — show what the job looks like with AI, not what disappears</div>`, takeaways:["AI change management is harder than traditional software change — it touches identity, trust, and accountability","Fear of displacement is the most common hidden blocker — name it directly rather than waiting for it to surface as 'accuracy concerns'","Champion-led rollouts consistently outperform mandate-led rollouts for AI adoption","First use cases should benefit individual employees, not just the organization — personal time savings build faster trust","Continuous training (monthly vs. one-time onboarding) is the strongest predictor of sustained AI adoption rates"], dyk:`Microsoft's internal research on M365 Copilot adoption found that teams with a designated AI champion achieved 2.8× higher sustained monthly active usage rates than teams without one, even with identical access and training. Peer influence consistently outperformed the effect of formal training alone.`, handson:{title:"Change Management Planning", type:"exercise", steps:["Think about a real AI tool deployment at your org (or design a hypothetical one for your M12 use case)","Name the hidden blocker: if you were an employee in this team, what would your real concern be? Write it in language they'd actually use.","Identify your champions: who are the 3–5 people most likely to be enthusiastic early adopters?","Design the first win: what's the one task this AI does that would make a skeptical employee say 'okay, this is actually useful' in their first week?","Write the role redefinition narrative: in 3 sentences, describe what this employee's job looks like with AI — emphasizing what they gain, not what the AI replaces."]}, quiz:[{q:"An employee says the AI meeting summary tool 'takes more time to verify than to just write the notes myself.' What is the most likely underlying concern?", opts:["The model needs to be more accurate","This may be a proxy for displacement anxiety or trust deficit — address by starting with a less threatening use case where AI clearly saves time, building trust before moving to judgment-augmenting tasks","Retrain the model on their meeting style","Replace the employee"], a:1, fb:"'Verification time' is a common proxy for distrust or displacement anxiety. Build trust through a use case where verification is low-stakes and time savings are obvious — then gradually introduce higher-trust use cases."},{q:"Why do champion-led rollouts consistently outperform mandate-led rollouts?", opts:["Champions have more technical expertise","Social proof from respected peers is more persuasive than top-down directives for tools that require behavior change and trust-building","Mandates are illegal in most organizations","Champions provide better technical support"], a:1, fb:"Seeing a respected colleague successfully use AI and get value from it is more persuasive than any training material — especially when the underlying concern is 'is this actually good or are they just saying it is?'"}], resources:[{l:"Microsoft Copilot Adoption Hub",u:"https://adoption.microsoft.com/en-us/copilot/"}]},
+  {id:18, track:2, num:"M18", title:"Industry Verticals: Where AI Is Landing", hook:"AI isn't hitting every industry equally. Knowing where it's landing hardest makes you a better advisor.", concept:`<p>Enterprise AI is spreading unevenly across industries. Understanding where AI creates real value vs. where it's still mostly press releases makes you a more credible advisor.</p><p><strong>Financial Services:</strong> Highest-maturity vertical. Production at scale: fraud detection, document processing (KYC/AML), regulatory reporting automation, personalized wealth management, algorithmic trading. Key Microsoft solutions: Azure AI for fraud, Copilot for financial analysts, Dynamics 365 for client intelligence. Key concern: explainability for regulatory audit.</p><p><strong>Healthcare:</strong> Highest-stakes, most regulated. Use cases gaining traction: clinical documentation (Dragon Copilot), diagnostic imaging AI, patient communication automation, drug discovery. Key Microsoft solution: Dragon Copilot (AI scribe). Key concern: HIPAA compliance, liability, EHR integration.</p><div class="highlight"><strong>Retail:</strong> Fastest-moving. Wide production: demand forecasting, personalization, inventory optimization, AI customer service, visual search. Microsoft Fabric heavily used for data pipelines. Key concern: legacy POS/ERP integration.<br><br><strong>Manufacturing:</strong> High ROI, lower visibility. Use cases: predictive maintenance, quality inspection via computer vision, supply chain prediction, engineering documentation generation. Azure AI Vision and IoT+AI combinations are core. Key concern: IT/OT integration complexity.<br><br><strong>Public Sector:</strong> Longest procurement cycles, highest accountability. Use cases: citizen service automation, benefits processing, fraud detection, document processing for permits. Microsoft's FedRAMP certifications are critical differentiators.</div>`, takeaways:["AI adoption maturity varies widely — financial services leads, construction and agriculture lag","Healthcare AI is high-stakes and highly regulated — Dragon Copilot is Microsoft's vertical solution for clinical workflows","Retail moves fastest — demand forecasting, personalization, and customer service automation are widely deployed","Manufacturing ROI from predictive maintenance is among the highest of any vertical","Public sector has unique procurement requirements — FedRAMP and government cloud are competitive differentiators"], dyk:`Goldman Sachs estimates AI could automate tasks equivalent to 25% of current US work, but impact varies dramatically: 46% of financial services tasks are automatable vs. 6% of construction. This explains the 3–4 year maturity gap between the two sectors — the work itself is more automatable, not the leadership.`, handson:{title:"Industry Deep Dive", type:"exercise", steps:["Pick your primary customer industry","Research 3 real companies in that industry that have publicly announced AI deployments. What use cases? What results?","Map each use case to a specific Microsoft product or service","Identify the one question a customer in that industry would most likely ask about AI that you couldn't currently answer well. Look it up.","Write a 3-bullet 'AI in [Industry]' briefing you could share before a customer call"]}, quiz:[{q:"A healthcare customer is interested in AI for their clinical documentation burden. Which Microsoft solution is most directly relevant?", opts:["Azure AI Foundry custom deployment","Dragon Copilot — Microsoft's AI clinical documentation tool for EHR-compatible transcription, summarization, and clinical notes","Microsoft Fabric","GitHub Copilot"], a:1, fb:"Dragon Copilot is Microsoft's purpose-built healthcare AI solution — specifically designed for clinical documentation, EHR integration, and HIPAA compliance."},{q:"Why does public sector AI adoption lag behind financial services despite similar organizational scale?", opts:["Public sector employees are less tech-savvy","Long procurement cycles, strict compliance requirements, limited AI talent budgets, and high accountability standards slow adoption — not lack of interest","AI doesn't work for government use cases","Budget constraints prevent any technology investment"], a:1, fb:"Public sector faces structural barriers: 12–24 month procurement timelines, FedRAMP certification requirements, strict auditability, and constrained technology talent budgets. The interest and use cases exist — the path is longer."}], resources:[{l:"Microsoft Industry Solutions",u:"https://www.microsoft.com/en-us/industry"},{l:"Dragon Copilot",u:"https://www.microsoft.com/en-us/industry/health/dragon-copilot"}]},
+  {id:19, track:2, num:"M19", title:"Build vs Buy vs Partner", hook:"Every org faces this decision. Most get it wrong because they're asking the wrong question.", concept:`<p>The build vs. buy vs. partner decision is most often made wrong because organizations start with "what technology should we use?" rather than "where does AI create defensible differentiation for us?"</p><p><strong>Build:</strong> Full control, maximum differentiation, highest cost, longest time to value. Right for: core IP where AI IS your product, unique use cases no vendor has solved. Wrong for: commodity use cases, when time to market matters, when you lack talent to maintain it.</p><p><strong>Buy:</strong> Fast, proven, no engineering overhead. Right for: commodity use cases (email, meeting summary, code assist), regulated industries where proven compliance matters. Wrong for: highly differentiated use cases where off-the-shelf produces generic outcomes.</p><div class="highlight"><strong>Partner/Platform:</strong> Build on Azure AI Foundry or Copilot Studio. You get control without rebuilding infrastructure. The middle path most enterprises should take: model choice without maintenance, enterprise security built in, integration with your existing data estate, ability to customize significantly without rebuilding from scratch.<br><br><strong>The right question:</strong> "Where does AI differentiate us vs. where is it table stakes?" Buy table stakes. Build or partner for differentiation.</div><p><strong>Lock-in in the AI era:</strong> Model lock-in is lower than it appears — most orgs can switch models with weeks of engineering work. Data lock-in is the real risk: if your AI system is the only thing that can access or understand your data, switching becomes a data migration project. Microsoft's open approach (multiple models in Azure, data stays in M365 tenant, Entra permissions govern everything) directly addresses lock-in concerns.</p>`, takeaways:["The right question: 'where does AI differentiate us?' — build/partner for differentiation, buy for commodity use cases","Platform/partner (Azure AI Foundry, Copilot Studio) is right for most enterprises — control without infrastructure burden","Model lock-in is manageable; data lock-in is the real risk — design architectures that keep data portable","Time to market often favors buy or partner over build — 18 months to build what a vendor already offers is rarely justified","Microsoft's open model approach directly addresses lock-in concerns"], dyk:`Gartner's 2025 AI Hype Cycle found 80% of enterprises that attempted to build large-scale custom AI capabilities from scratch in 2023–2024 either abandoned the project or switched to a platform approach within 18 months. Primary reasons: underestimated complexity, inability to keep up with rapidly improving foundation models, and difficulty attracting talent.`, handson:{title:"Build vs Buy vs Partner Decision", type:"exercise", steps:["For your M12 use case, evaluate all three options:","Build assessment: What would full custom development require? Cost, timeline, team size, ongoing maintenance?","Buy assessment: What off-the-shelf solutions exist? Name 2–3 vendors. How close is the fit?","Partner/Platform: How would you build this on Azure AI Foundry or Copilot Studio? What would you control vs. what would the platform handle?","Score each on: Time to Value (1–5), Total Cost (1–5, 5=lowest), Differentiation Potential (1–5), Data Control (1–5)","Write your recommendation in one paragraph including: the approach chosen, the one assumption it depends on, and the circumstance that would change your recommendation."]}, quiz:[{q:"A company wants AI to generate personalized investment reports for 50,000 clients. Competitors offer similar services. Should they build custom?", opts:["Yes — financial services always requires custom AI","No — this is a commodity use case where build cost and timeline don't justify marginal differentiation; buy or platform solutions are the right starting point","Yes — client data requires on-premise custom solutions","Only if they have more than 100,000 clients"], a:1, fb:"Personalized report generation is a well-solved problem. Building custom adds 18 months for marginal differentiation. The right move is platform or buy, with customization in the data (proprietary research) rather than AI infrastructure."},{q:"Why is data lock-in a more serious risk than model lock-in?", opts:["Models are more expensive than data","Switching AI models typically takes weeks; switching data architectures where the AI system has become the primary access layer for your data can take months to years","Data lock-in is a legal issue","Model lock-in is actually more serious"], a:1, fb:"If your AI system becomes the primary interface for accessing your data, switching providers becomes a data migration project. The model you use is much easier to swap than the data architecture that depends on it."}], resources:[{l:"Azure AI Foundry",u:"https://ai.azure.com"}]},
+  {id:20, track:2, num:"M20", title:"AI Leadership & Culture", hook:"The orgs winning with AI aren't the ones with the best models. They're the ones with the best culture around AI.", concept:`<p>Technology is the easy part. Culture is the hard part. Organizations that treat AI as a cultural transformation — not just a technology adoption — achieve dramatically better outcomes.</p><p><strong>What AI-native organizations do differently:</strong> Leadership uses AI personally and visibly. When a CEO shares how they used Copilot in their last board prep, it signals permission more powerfully than any training program. Organizations with leaders who model AI use achieve much higher adoption rates.</p><p>Experimentation is structurally rewarded — funded mechanisms (time, budget, recognition) exist for employees to experiment, even when experiments fail. Organizations that only celebrate AI successes create a culture of under-reporting failures, which means problems compound quietly.</p><div class="highlight"><strong>The Chief AI Officer role:</strong> Not a CTO who likes AI or a data scientist who got promoted — a distinct executive function with a mandate for AI strategy, governance, org-wide AI literacy, and accountability for AI-driven business outcomes. Its emergence is one of the clearest indicators of Stage 4 vs. Stage 3 maturity.<br><br><strong>AI literacy across non-technical roles:</strong> Organizations winning with AI are building fluency in marketing, finance, HR, legal, and operations — not just technology. This creates a self-reinforcing cycle: non-technical employees who understand AI identify use cases technical teams miss, champion adoption in their teams, and hold AI systems to higher standards.</div><p><strong>What the best AI organizations do that others don't:</strong> They measure AI adoption rigorously with executive accountability. They communicate openly about AI limitations — which builds more durable trust than overselling. They've made genuine commitments to workforce development: employees whose roles change because of AI are helped to develop new capabilities, not quietly replaced.</p>`, takeaways:["AI-native culture requires leaders who use AI personally and visibly — example is more powerful than mandate","Structural rewards for experimentation are required for innovation — not just lip service","The CAIO role signals organizational commitment to AI as strategic transformation, not a technology project","AI literacy across non-technical roles creates self-reinforcing adoption cycles and better use case identification","Communicating openly about AI limitations builds more durable trust than overselling capabilities"], dyk:`A 2024 Stanford HAI study found that leadership AI usage (executives actively using AI tools) was the single strongest predictor of organization-wide AI value creation — stronger than AI budget, number of data scientists, or technical infrastructure maturity. Culture flows from the top.`, handson:{title:"AI Culture Assessment", type:"exercise", steps:["Reflect honestly on your organization's AI culture:","Leadership behavior: Do senior leaders use AI tools personally and talk about it publicly? Or is it 'do as I say, not as I do'?","Experimentation structure: Are there funded, time-allocated mechanisms for AI experimentation? Or does it happen outside official work?","Failure culture: When an AI project fails, is the learning shared openly? Or does failure get quietly buried?","Literacy investment: Is AI literacy training available to non-technical roles? Is it mandatory, optional, or theoretical?","Your one recommendation: what single change to your org's AI culture would have the biggest impact?"]}, quiz:[{q:"A company has $10M in AI budget and 50 data scientists but executives don't use AI tools or discuss AI in all-hands meetings. What is most likely?", opts:["They will succeed because of technical resources","AI adoption will be slower than organizations with half the resources but strong leadership engagement — culture flows from visible leadership behavior","Budget is the primary success factor","The 50 data scientists will compensate"], a:1, fb:"Stanford HAI research is clear: leadership AI usage is the strongest predictor of org-wide AI value creation — stronger than budget or technical talent. 'AI is for the tech team' consistently underperforms cultures where leadership models use."}], resources:[{l:"Microsoft AI Transformation Hub",u:"https://learn.microsoft.com/en-us/ai/"}]},
+
+  // ── TRACK 3 ──
+  {id:21, track:3, num:"M21", title:"The Microsoft AI Portfolio", hook:"Microsoft has more AI products than most people realize. Knowing the full portfolio is your first unfair advantage.", concept:`<p>The Microsoft AI portfolio spans four layers — and the power is in showing how they connect, not just listing products.</p><p><strong>Infrastructure:</strong> Azure AI Foundry (build, evaluate, deploy AI at enterprise scale), Azure OpenAI Service (GPT models via Azure), Azure AI Search (enterprise RAG), Azure Machine Learning. For builders — engineering teams constructing AI-powered applications.</p><p><strong>Developer:</strong> GitHub Copilot (AI-assisted coding), Semantic Kernel (Microsoft's AI orchestration SDK, like LangChain), Visual Studio + Copilot integration. Serves developers and DevOps teams.</p><div class="highlight"><strong>Platform:</strong> Copilot Studio (low-code agent builder with M365 connectors), Power Platform AI (AI Builder for citizen developers), Microsoft Fabric + OneLake (unified data + AI), Dynamics 365 Copilot (CRM and ERP AI assistance). Enables business builders — non-engineers creating AI-powered workflows.<br><br><strong>Applications:</strong> Microsoft 365 Copilot (AI in Word, Excel, Teams, Outlook — $30/user/month add-on), Copilot Chat (enterprise-protected, included with M365 business subscriptions), Security Copilot (AI for SOC), Dragon Copilot (healthcare), Copilot+ PCs (on-device AI). What most employees interact with daily.</div><p><strong>The through-line:</strong> Every layer connects through Microsoft Graph (org activity and relationship data), Entra ID (identity and access), and Azure (compute and compliance). This is the platform story — not a list of products but a coherent architecture that compounds in value as more layers are used together.</p>`, takeaways:["Four layers: Infrastructure (builders), Developer (engineers), Platform (business builders), Applications (all employees)","The through-line: Microsoft Graph (data), Entra ID (identity), Azure (compute, compliance) connects every layer","Showing how products connect — not just listing them — is the difference between a feature pitch and a platform conversation","Each customer role has a primary entry point: Azure AI Foundry (technical), Copilot Studio (business), M365 Copilot (executive)","The portfolio's value compounds as more layers are used together — this is the platform story done right"], dyk:`Microsoft now has more than 400 million monthly active users of AI-powered products across its portfolio — the largest enterprise AI deployment in the world by users. This scale creates compounding advantages: every interaction improves models through feedback, every new enterprise customer adds to Microsoft's understanding of AI at scale.`, handson:{title:"Portfolio-to-Audience Mapping", type:"exercise", steps:["For each of three customer personas, identify the 2–3 most relevant Microsoft AI products and write a one-sentence pitch:","1. CTO/VP Engineering: responsible for developer productivity and AI platform strategy","2. COO/Business Unit Leader: responsible for operational efficiency and business outcomes","3. CEO/CFO: focused on competitive position and return on investment","Then: which Microsoft AI product is most relevant to your current primary customer base? Can you explain it in 60 seconds without jargon?"]}, quiz:[{q:"A customer asks 'how does all of this AI connect across Microsoft?' What is the most accurate and compelling answer?", opts:["Each product is independently valuable and connects through APIs","All Microsoft AI products share a common foundation: Microsoft Graph provides your organization's data, Entra ID governs identity and permissions, and Azure provides compliant compute — so every product you use adds to a coherent, governed AI platform","They connect through Microsoft Teams","The products are separate but Microsoft is working on integration"], a:1, fb:"The platform story — Graph + Entra + Azure as connective tissue — is what differentiates Microsoft from point solutions. A customer using GitHub Copilot, Copilot Studio, and M365 Copilot is building on a unified foundation."}], resources:[{l:"Microsoft AI Hub",u:"https://www.microsoft.com/en-us/ai"},{l:"Microsoft Learn AI",u:"https://learn.microsoft.com/en-us/ai/"}]},
+  {id:22, track:3, num:"M22", title:"Azure AI Foundry Deep Dive", hook:"This is where enterprise AI gets built at Microsoft scale. Know it better than anyone in the room.", concept:`<p>Azure AI Foundry is Microsoft's unified platform for building, evaluating, and deploying enterprise AI. It answers the most common enterprise question: "we want to use the best models for our use case, but we don't want 10 different API contracts, billing relationships, and security reviews."</p><p><strong>Model Catalog:</strong> 1,800+ models from OpenAI (GPT series), Meta (Llama), Mistral, Anthropic (Claude), Cohere, and others — deployable under Azure's enterprise terms. One billing relationship, one security review, one audit trail.</p><p><strong>Agent Service:</strong> Build multi-agent systems with managed tool calling, code execution, file search, and Azure connectors. Production-grade agent infrastructure without building orchestration from scratch.</p><div class="highlight"><strong>Prompt Flow:</strong> Visual workflow builder for chaining prompts, tools, logic, and APIs. Azure-native monitoring, versioning, and deployment — comparable to LangChain flows but with enterprise controls.<br><br><strong>Evaluation Tools:</strong> Built-in evals for safety, quality, groundedness, and relevance. LLM-as-judge pattern natively supported. Run evals automatically on every deployment — the production layer most builders skip and regret.<br><br><strong>Observability:</strong> End-to-end tracing, token usage monitoring, latency tracking, and cost allocation by project and team. Azure Monitor integration for unified operational dashboards.</div><p><strong>The key positioning:</strong> "Your engineers can access the best models from OpenAI, Anthropic, Meta, and others — under Azure's security umbrella, with your existing billing relationship, with the same audit trail your CISO already approved. You don't have to choose between best models and enterprise governance."</p>`, takeaways:["Azure AI Foundry provides 1,800+ models under Azure's security, compliance, and billing umbrella","Prompt Flow enables visual pipeline building; Agent Service handles production agent infrastructure","Built-in evals, content safety, and observability make Foundry the production-grade alternative to DIY stacks","Key positioning: model choice (OpenAI, Anthropic, Meta, Mistral) + enterprise governance + existing Azure relationship = no new security reviews","Azure AI Foundry is the right entry point for technical buyers comparing platform options"], dyk:`Azure AI Foundry processes over 10 trillion tokens per month across its customer base — one of the largest AI inference platforms in the world. This scale gives Microsoft unique observability into enterprise AI usage patterns, which directly informs product development.`, handson:{title:"Azure AI Foundry Walkthrough", type:"exercise", steps:["Go to ai.azure.com (sign in with your Microsoft work account)","Browse the Model Catalog: click into 3 models from different providers (OpenAI, Meta, Anthropic). Compare benchmark scores and use cases.","Deploy one model in the playground. Run 3 prompts. Observe token count and latency.","Navigate to the Evaluation section. What built-in eval types are available?","What's one question a customer CTO would ask about Azure AI Foundry that you couldn't answer from this walkthrough? That's your homework before the next customer meeting."]}, quiz:[{q:"A customer's security team has approved Azure for all cloud workloads. They want to use GPT-4o and Claude. The most compelling Azure AI Foundry positioning?", opts:["They need separate agreements with OpenAI and Anthropic","Azure AI Foundry provides access to both GPT-4o and Claude under their existing Azure security approvals, compliance certifications, and billing — no new security reviews required","Azure only supports OpenAI models","They should use native OpenAI and Anthropic APIs for best performance"], a:1, fb:"This is the core Azure AI Foundry value proposition: accessing multiple frontier models under a single, already-approved security posture eliminates procurement and security review overhead for each new AI provider."}], resources:[{l:"Azure AI Foundry Learning Path",u:"https://learn.microsoft.com/en-us/training/paths/get-started-ai-apps-agents/"},{l:"Azure AI Foundry Portal",u:"https://ai.azure.com"}]},
+  {id:23, track:3, num:"M23", title:"The Copilot Ecosystem", hook:"Copilot is not one product. It's a platform. Customers who understand this spend more — and get more value.", concept:`<p>Treating "Copilot" as a single product is one of the most common mistakes in Microsoft AI sales conversations. Getting the distinctions right prevents misquotes, wrong expectations, and lost deals.</p><p><strong>Microsoft Copilot (consumer):</strong> Free AI assistant at copilot.microsoft.com. Grounded in web search. No M365 license required. No org data access. Model: GPT-5 with smart routing. This is NOT the enterprise product.</p><p><strong>Microsoft 365 Copilot Chat:</strong> Enterprise version, included with M365 business subscriptions. Enterprise data protection. Grounded in web by default; agents can add M365 data grounding. No Copilot add-on license required.</p><p><strong>Microsoft 365 Copilot:</strong> Premium tier. Requires $30/user/month add-on. AI in Word, Excel, PowerPoint, Teams, Outlook. Grounded in org's M365 data via Microsoft Graph. Features: meeting summaries, email drafts from context, document generation, Excel analysis. This is the flagship enterprise product.</p><div class="highlight"><strong>Copilot Studio:</strong> Low-code agent builder. Create custom agents for Teams, websites, or M365. Supports knowledge sources, custom actions, and model choice (GPT-5 or Claude). The extensibility layer — how customers build Copilot experiences specific to their business.<br><br><strong>The model story (2026):</strong> M365 Copilot runs GPT-5 by default with dynamic routing. Claude Sonnet 4 and Opus 4.1 now available in Copilot Studio and Researcher agent. The 'Critique' feature uses GPT for generation and Claude for review — producing demonstrably better research outputs. 'Council' lets users compare GPT and Claude responses side-by-side. Microsoft is the only platform offering multiple frontier models in one enterprise product.<br><br><strong>Security Copilot:</strong> AI for security operations — incident summarization, threat patterns, investigation acceleration. Separate license. Target buyer: CISO and security operations teams.</div>`, takeaways:["Copilot is a brand family — consumer Copilot, M365 Copilot Chat, M365 Copilot, and Copilot Studio are distinct products with different licenses","M365 Copilot ($30/user/month) is the flagship: AI in Office apps, grounded in org data via Microsoft Graph","Copilot Studio is the extensibility layer — how customers build custom agents on top of the Copilot platform","As of 2026, Copilot runs multiple models: GPT-5 default + Claude for reasoning-intensive tasks in Researcher","Getting licensing distinctions right in customer conversations prevents misquotes and wrong expectations"], dyk:`Microsoft's Copilot 'Critique' feature — GPT generates a research response and Claude reviews it for accuracy before delivery — achieves a 13.8% improvement on the DRACO deep research benchmark over using either model alone. This multi-model approach demonstrates that Microsoft's competitive advantage is in orchestration and trust infrastructure, not any single model.`, handson:{title:"Build a Declarative Agent", type:"exercise", steps:["Open Copilot Studio at copilotstudio.microsoft.com","Create a new agent with a specific purpose related to your team's work — e.g., onboarding FAQ, product Q&A, or policy guide","Add one knowledge source: upload a document, paste a URL, or connect a SharePoint site","Write a system prompt defining persona, scope, and how to handle out-of-scope questions","Test in the built-in chat: 3 in-scope questions and 2 out-of-scope. How does it handle boundaries?","Note: what would you need to connect for this agent to be genuinely useful in production?"]}, quiz:[{q:"A customer with M365 E3 licenses asks 'does our subscription include Copilot?' The accurate answer?", opts:["Yes — all M365 subscriptions include full Copilot","M365 Copilot Chat (enterprise-protected web experience) is included. The full M365 Copilot (AI inside Office apps, grounded in org data) requires an additional $30/user/month add-on.","No — Copilot requires a separate subscription","Yes, but only for Teams"], a:1, fb:"This is a frequent source of customer confusion. Copilot Chat (web experience) is included. The embedded M365 Copilot (inside Office apps) requires the add-on. Getting this right prevents misaligned expectations."},{q:"What makes the Copilot 'Critique' feature significant competitively?", opts:["It's the first AI feature to use two models","It demonstrates Microsoft's platform advantage: orchestrating GPT and Claude in sequence within a single enterprise product, producing better results than either alone while customers pay Microsoft — not multiple AI vendors","It's cheaper than a single model","It eliminates hallucination"], a:1, fb:"Critique is a powerful demonstration of Microsoft's platform strategy: the model is a commodity input; Microsoft's value is orchestration, enterprise trust, and M365 integration."}], resources:[{l:"Copilot Studio",u:"https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio"},{l:"M365 Copilot Learning Path",u:"https://learn.microsoft.com/en-us/training/paths/get-started-with-microsoft-365-copilot/"}]},
+  {id:24, track:3, num:"M24", title:"GitHub Copilot & Developer Productivity", hook:"Developers are the fastest AI adopters in any org. Win them and you win the org.", concept:`<p>GitHub Copilot is the most widely deployed AI developer tool in the world — with over 77,000 organizations using it. For Microsoft, it's also the highest-conversion entry point into the broader AI ecosystem: developers who use GitHub Copilot adopt other Microsoft AI tools at 3× the rate of those who don't.</p><p><strong>What GitHub Copilot does:</strong><br>
+<strong>Code completion:</strong> Context-aware suggestions as you type, in any language, in VS Code, JetBrains IDEs, Visual Studio, and Neovim. Goes beyond autocomplete — understands intent across the whole file.<br>
+<strong>Copilot Chat:</strong> Natural language interface for coding questions, code explanation, test generation, and bug diagnosis. "Explain this function," "write a unit test," "why is this throwing a null pointer exception?"<br>
+<strong>Copilot Agents:</strong> Multi-step agentic coding — takes a GitHub issue, understands the codebase, writes the code change, creates a branch, runs tests, and submits a PR. Available on GitHub Copilot Enterprise.</p><div class="highlight"><strong>The productivity numbers:</strong> GitHub's research shows developers complete tasks 55% faster with Copilot. 74% report feeling more fulfilled — focusing on more interesting work. Code review turnaround improves 15–20% when Copilot pre-reviews PRs. These are measured numbers from tens of thousands of developers across hundreds of organizations.<br><br><strong>How to position to engineering leadership:</strong> Don't lead with productivity metrics — most engineering leaders are skeptical of vendor claims. Lead with the talent story: "Your developers are already using AI tools — personal ChatGPT, free tools, third-party extensions. GitHub Copilot brings that inside your security boundary. You get usage visibility, policy enforcement, and audit trails. And your best engineers get better tools." The governance angle often converts faster than the productivity angle with security-conscious engineering leaders.</div>`, takeaways:["GitHub Copilot is the most widely deployed AI developer tool globally — and the highest-conversion Microsoft AI entry point","Copilot Agents handle multi-step coding: issue → code → branch → tests → PR — the next generation beyond code completion","74% of developers report higher job satisfaction — talent retention is often more resonant with engineering leaders than productivity metrics","The security governance pitch ('bring shadow AI inside your security boundary') converts fastest with CISOs and security-conscious engineering leaders","Model choice in GitHub Copilot Enterprise (GPT-5, Claude, Gemini) gives flexibility without managing multiple vendor relationships"], dyk:`GitHub reported that in 2024, AI-assisted code accounts for approximately 40% of all new code pushed by Copilot users. More significantly, Copilot users are 1.8× more likely to stay with their employer than comparable developers without AI tools — one of the few enterprise software tools with a documented positive effect on employee retention.`, handson:{title:"Use GitHub Copilot for Real Work", type:"exercise", steps:["Start a free trial at github.com/features/copilot if you don't have access","Open VS Code with the Copilot extension installed","Task 1: Write a function in any language. Stop mid-way and let Copilot complete it. How accurate was the suggestion?","Task 2: Open Copilot Chat and ask 'Explain this code' on an unfamiliar file. Rate the explanation quality.","Task 3: Ask Copilot Chat to write a unit test for a function. Review it — does it cover edge cases?","Write down: what impressed you? What fell short? What would you tell a skeptical developer? What would you tell their CTO?"]}, quiz:[{q:"A CISO is concerned about developers using personal ChatGPT for coding assistance and potentially leaking code. How does GitHub Copilot address this?", opts:["It doesn't — all AI tools have the same data risk","GitHub Copilot Enterprise keeps code within the org's GitHub environment, doesn't train on customer code by default, and gives admins visibility and policy controls — bringing shadow AI behavior inside the security boundary","Only GitHub Copilot Business has security controls","The CISO concern is not valid"], a:1, fb:"This is the CISO conversation: developers are already using AI tools with no organizational visibility. GitHub Copilot Enterprise provides the same productivity with governance: usage logging, policy enforcement, IP protection, and no external training on proprietary code."}], resources:[{l:"GitHub Copilot",u:"https://github.com/features/copilot"},{l:"GitHub Copilot + Responsible AI",u:"https://learn.microsoft.com/en-us/training/modules/responsible-ai-with-github-copilot/"}]},
+  {
+    id:25, track:3, num:"M25",
+    title:"The Competitive Landscape",
+    hook:"You can't position Microsoft confidently if you don't understand the competition honestly.",
+    concept:`
+<p>Knowing the competitive landscape is not about memorizing talking points. It's about understanding each player's strengths and weaknesses clearly enough to have honest, specific conversations — rather than sounding like a brochure. Customers respect honesty about competition.</p>
+<p><strong>OpenAI:</strong> The company that triggered the current wave with GPT-3 and ChatGPT. Strongest developer ecosystem and third-party integration network. Most recognized AI brand. Weakness: no enterprise stack of their own — customers building directly on OpenAI still need to build their own security layer, compliance controls, and observability. Available through Azure (Microsoft's channel) or direct.</p>
+<p><strong>Anthropic (Claude):</strong> Known for long-context performance, document analysis reliability, and safety research. Claude Opus 4.1 considered among the best for complex reasoning and following detailed instructions. Weakness: smaller ecosystem, no enterprise platform of their own. Increasingly available inside Microsoft — Copilot Studio, Researcher agent, Azure AI Foundry. Microsoft can honestly say: "If Claude is right for your use case, we support Claude — under our governance umbrella."</p>
+<div class="highlight"><strong>Google (Gemini + Vertex AI):</strong> Strongest multimodal capabilities, deepest search grounding, Gemini's 1M+ token context window is class-leading. Vertex AI is the enterprise platform. Google Workspace integration is compelling for Google-first organizations. Weakness: enterprise trust lags Microsoft and Azure in many markets, complex pricing, and product discontinuation history creates long-term concern.<br><br>
+<strong>AWS (Amazon Bedrock):</strong> Widest model selection (Anthropic, Meta, Mistral, Cohere, Amazon Titan). Natural choice for AWS-first organizations. No-lock-in narrative resonates. Weakness: no killer consumer or productivity application equivalent to M365 Copilot — customers still need to build the entire application layer.<br><br>
+<strong>Microsoft's actual advantage — the honest version:</strong> Not the model. The platform. Security, compliance, existing M365 investment, Entra ID as the identity layer, data residency controls, and — crucially — the ability to run GPT, Claude, Llama, Mistral in a single governed environment. Every competitor offers great models. Microsoft offers all of them, plus the enterprise infrastructure most organizations already run on.</div>
+<p><strong>The conversation to have:</strong> "We think you should use the best model for each task. That's why Azure AI Foundry supports 1,800+ models and Copilot Studio now supports both GPT and Claude. Our job isn't to tell you which model is best — it's to make sure you can use whatever is best, inside the security and compliance framework you already trust."</p>`,
+    takeaways:[
+      "OpenAI has the strongest ecosystem; AWS has the widest model selection; Google has the best multimodal; Microsoft has the strongest enterprise platform",
+      "The honest Microsoft advantage: not one model, but all models under one governed enterprise platform",
+      "Google's enterprise trust gap and product discontinuation history is a legitimate competitive angle when relevant",
+      "AWS customers build the application layer themselves — M365 Copilot is a ready-made AI productivity layer competitors can't replicate quickly",
+      "Customers respect honest competitive assessment — it builds more trust than pretending competitors don't exist"
+    ],
+    dyk:`A 2025 Gartner Magic Quadrant for Cloud AI Developer Services noted Microsoft's unique strength: the only platform offering a ready-made enterprise AI productivity layer (M365 Copilot) on top of an enterprise AI platform (Azure AI Foundry), with a developer tool (GitHub Copilot) connecting both. No other vendor offers all three layers from a single, integrated stack.`,
+    handson:{title:"Multi-Model Sandbox", type:"sandbox", steps:[]},
+    quiz:[
+      {q:"A customer says 'we've been using Claude directly via Anthropic's API for 6 months and we love it. Why would we switch to Azure?' Best response?", opts:["Claude on Azure is a different, better version","You don't need to switch models — Claude is available on Azure AI Foundry. You run the same Claude under your existing Azure compliance approvals, current billing, and with the ability to add GPT or other models without a new vendor relationship.","Claude is inferior to Azure OpenAI models","Azure has better pricing for all use cases"], a:1, fb:"You're not asking them to give up Claude — you're offering Claude + enterprise governance + billing consolidation + model flexibility. The customer keeps what they love and gains everything Azure offers."},
+      {q:"Google Gemini's context window (1M+ tokens) is significantly larger than GPT-4o's (128K). How should you address this?", opts:["Claim GPT is better anyway — specs don't matter","Acknowledge it honestly: Gemini's long context is a genuine strength. Then probe the use case — often 128K is sufficient, or RAG solves the same problem more cost-effectively. Acknowledge the limitation where it genuinely exists.","Change the subject to M365 integration","Tell the customer context window benchmarks are misleading"], a:1, fb:"Honest competitive conversations build credibility. Acknowledge Google's strength, probe the underlying use case. Most document-heavy use cases can be solved with 128K or RAG — but some genuinely need 1M tokens. Knowing the difference is more credible than dismissing the gap."}
+    ],
+    resources:[{l:"Azure AI Foundry",u:"https://ai.azure.com"},{l:"Gemini (no login required)",u:"https://gemini.google.com"},{l:"ChatGPT (no login required)",u:"https://chat.openai.com"}]
+  },
+  {id:26, track:3, num:"M26", title:"Why Microsoft: The Enterprise Narrative", hook:"Features don't win enterprise deals. Trust, security, and integration do.", concept:`<p>The 'why Microsoft' narrative should be constructed specifically for each customer's situation — not delivered as a generic pitch. But five foundational pillars apply across nearly every enterprise conversation.</p><p><strong>Pillar 1 — Security & Compliance:</strong> Azure has more compliance certifications than any other cloud provider: FedRAMP High, DoD IL5, ISO 27001, SOC 2, HIPAA, GDPR, and over 100 others. These apply automatically to AI services running on Azure — you don't audit Azure AI Foundry separately. For regulated industries, this eliminates months of compliance work required with other providers.</p><p><strong>Pillar 2 — Existing Investment:</strong> The average enterprise customer has been paying for M365 for years. Their email, documents, meetings, and collaboration are already in the Microsoft ecosystem. Copilot doesn't require data migration, new user accounts, or new authentication — it extends what's already there. Competitors require customers to bring data to them. Microsoft brings AI to where the data already lives.</p><div class="highlight"><strong>Pillar 3 — Data Stays Where It Is:</strong> Your data doesn't leave your tenant without explicit authorization. Entra ID permissions are respected automatically — if an employee doesn't have access to a document, Copilot won't surface it. Data residency controls let you specify which Azure regions process your data. Critical in markets with strict data sovereignty (EU, Germany, Japan, GCC).<br><br><strong>Pillar 4 — Responsible AI by Default:</strong> Content safety, privacy protections, bias evaluation tools, and audit logs are built into every Azure AI product — not sold as add-ons. Microsoft has the largest responsible AI research team in the industry (800+ researchers) and published standards that apply to every product.<br><br><strong>Pillar 5 — Model Choice Without Lock-in:</strong> Azure AI Foundry supports 1,800+ models. Copilot Studio runs GPT and Claude. GitHub Copilot supports GPT, Claude, and Gemini. Customers use the best model for each task without separate vendor relationships, compliance reviews, or billing accounts.</div>`, takeaways:["The 5 'why Microsoft' pillars: Security & Compliance, Existing Investment, Data Stays Where It Is, Responsible AI by Default, Model Choice Without Lock-in","The strongest pillar for a specific customer depends on their primary concern — diagnose first, then activate the right narrative","Data residency and Entra-governed permissions are uniquely compelling for regulated industries and data-sovereignty-sensitive markets","The 'existing investment' pillar wins by making competitor switching cost explicit: Microsoft brings AI to your data; others require you to bring data to them","Build a customer-specific narrative, not a generic pitch — the same five pillars land differently for a CISO vs. a CFO vs. a COO"], dyk:`In a 2025 survey of 250 enterprise AI procurement decisions, the top three vendor selection factors were: security and compliance certifications (81%), integration with existing tools (76%), and data privacy and sovereignty controls (71%). Model performance ranked 6th at 52%. The factors that win enterprise AI deals are almost entirely platform and trust factors.`, handson:{title:"Build a Customer-Specific Narrative", type:"exercise", steps:["Think of a specific customer you work with or would like to win","What is their primary concern about AI? Security? Data privacy? Cost? Regulatory compliance?","Which of the 5 pillars addresses that concern most directly? Lead with that pillar.","What Microsoft products do they already use? That's the integration story.","What competitor are they comparing you to? What's that competitor's primary strength? How does the Microsoft narrative address it without dismissing it?","Write a 3-minute 'why Microsoft' narrative for this specific customer. Start with their problem, show Microsoft's specific answer, end with the one thing they'd have to give up to choose a competitor."]}, quiz:[{q:"A healthcare customer says their biggest AI concern is 'we can't have patient data leaving our systems.' Which Microsoft AI pillar is most directly responsive?", opts:["Model choice without lock-in","Data Stays Where It Is — Copilot and Azure AI process your data within your Azure tenant, Entra permissions are respected automatically, and data residency controls specify which Azure regions handle processing.","Responsible AI by Default","Security & Compliance certifications"], a:1, fb:"The 'data stays where it is' pillar directly addresses data sovereignty concerns. Data processed within the customer's Azure tenant, Entra permissions enforced automatically, and HIPAA compliance applies because Azure is a HIPAA-covered entity."}], resources:[{l:"Microsoft Trust Center",u:"https://www.microsoft.com/en-us/trust-center"}]},
+  {id:27, track:3, num:"M27", title:"Customer AI Maturity Assessment", hook:"The best customer conversations start with a diagnosis, not a pitch.", concept:`<p>The most effective Microsoft sellers and consultants share one characteristic: they ask more than they tell. An AI maturity assessment is the structured diagnostic conversation that positions you as a trusted advisor — and surfaces exactly what you need to recommend the right solution.</p><p><strong>The 5 diagnostic questions:</strong></p><p><strong>Q1: "Where are your employees using AI today — officially and unofficially?"</strong> Maps current state without judgment. Listen for: shadow IT (personal ChatGPT), isolated official pilots, or "we don't know." Not knowing means you can position Copilot Chat's usage analytics as a visibility solution before it's even a productivity tool.</p><p><strong>Q2: "If AI could reason over any of your organization's data, which data would create the most value?"</strong> Surfaces the RAG and Copilot data grounding opportunity. Listen for SharePoint documents, CRM data, technical documentation. Maps directly to Microsoft data connectors.</p><p><strong>Q3: "What has stopped you from moving faster on AI in the last 12 months?"</strong> The most diagnostic question. Common answers and implications:<br>
+"Security/compliance concerns" → Lead with Azure AI governance, Entra, data residency<br>
+"We don't have the data" → Lead with Microsoft Fabric and data readiness<br>
+"Leadership isn't aligned" → Change management and executive alignment conversation<br>
+"We tried a pilot and it didn't scale" → Production AI conversation: evals, observability, Azure AI Foundry</p><div class="highlight"><strong>Q4: "If AI could automate one thing for your team tomorrow, what would it be?"</strong> Maps desired end state and highest-priority use case. Listen for M12 characteristics: high-volume, language-heavy, tolerable imperfection. Map to a specific Microsoft product or Copilot feature.<br><br><strong>Q5: "What does success with AI look like for you in 12 months — what would be different?"</strong> Most important question. This surfaces the business outcome they're optimizing for — and that outcome is what your solution needs to credibly address. Pitch outcomes, not products.</div>`, takeaways:["The 5 diagnostic questions map: current state, data opportunity, blockers, priority use case, and success definition","Answers to 'what stopped you?' directly map to specific Microsoft solutions and positioning angles","A customer who can't answer current usage reveals a visibility and governance problem — Copilot Chat analytics addresses this before it's a productivity tool","Reading maturity signals from question answers determines which Microsoft entry point to recommend","Ask more than tell: the advisor who learns more from a conversation closes more than the one who presents more"], dyk:`Gartner research found that salespeople who conducted structured discovery conversations (5+ specific diagnostic questions before discussing product) won deals at 2.4× the rate of those who led with product presentations. In AI specifically, where customer understanding is low and anxiety is high, the discovery-led approach is even more differentiating.`, handson:{title:"Run a Mock Assessment", type:"exercise", steps:["Find a colleague, a friend in tech, or use a hypothetical company you know well","Run through all 5 diagnostic questions. Take notes on answers.","Based on the answers: what AI maturity stage are they at?","What is the single most important blocker surfaced?","What Microsoft product or conversation should come next — and why?","Write a 3-sentence 'next step' recommendation: what you heard, what it signals, and what you'd recommend as a first concrete action."]}, quiz:[{q:"A customer answers Q3 ('what stopped you from moving faster?') with 'we ran a customer service pilot, it worked great, but we couldn't figure out how to scale it.' What does this reveal?", opts:["They need a better model","Stage 3 maturity with a scaling gap — the right conversation is about production AI infrastructure: evals, observability, governance framework, and Azure AI Foundry for going from pilot to production","They should restart with a different use case","They need more data"], a:1, fb:"A working pilot that couldn't scale is a Stage 3 pattern. The blocker is rarely the model — it's production infrastructure: no eval system, no observability, no cost management, no governance for broader rollout."}], resources:[{l:"Microsoft AI Assessment Tools",u:"https://learn.microsoft.com/en-us/ai/"}]},
+  {id:28, track:3, num:"M28", title:"Objection Handling", hook:"The objections are always the same. Your responses shouldn't be scripts — they should be frameworks.", concept:`<p>Enterprise AI objections are predictable. The same 6–8 come up in nearly every conversation, and customers who raise them are usually raising them for legitimate reasons. The goal is not to overcome objections — it's to understand what's underneath them.</p><p><strong>"We're already using OpenAI directly."</strong> This isn't an objection to Microsoft — it's a signal they've validated AI value. Response: acknowledge their initiative, ask about governance ("who owns the security review for that API key?"), then surface the gap: "The question most teams hit at scale is governance, compliance, and cost management. Would it be useful to walk through what those look like at enterprise volume, and how Azure AI Foundry addresses them without requiring you to change your model?"</p><p><strong>"We built our own."</strong> Understand what "built" means. Response: "That's a real signal of commitment — what are you running it on? The challenge I've seen similar teams run into is keeping up with model improvements and managing maintenance burden as models evolve. How much of your team's time goes to maintaining the AI infrastructure vs. building new features on top of it?"</p><p><strong>"It's too expensive."</strong> Clarify the comparison. Response: "The M365 Copilot license is $30/user/month. If it saves 30 minutes per week per user at $90,000 fully-loaded annual salary, that's $22/week recovered vs. $7.50/week in license cost. Do you want to walk through that ROI calculation for your top two use cases together?"</p><div class="highlight"><strong>"We're not ready."</strong> Probe what "ready" means. Response: "What would 'ready' look like specifically? The organizations that wait until they're ready are the ones that fall furthest behind — readiness comes from doing. What's the smallest thing we could try in 30 days that would answer your biggest question without requiring you to be fully ready?"<br><br><strong>"We don't trust AI with our data."</strong> The best objection because it's specific and answerable. Response: "That's exactly the right concern. Let me walk you through exactly what happens to your data when you use Copilot inside your M365 tenant." Walk through: data stays in tenant, Entra permissions enforced, Microsoft can't train on your data, data residency controls, audit trail. Specificity is the antidote to distrust.<br><br><strong>"Our lawyers won't allow it."</strong> Response: "What specifically are they concerned about — data handling, liability for AI outputs, IP ownership? Microsoft's product terms address each specifically. Would it be useful to schedule a session with your legal team and our compliance team to go through the specific clauses?"</div>`, takeaways:["Objections are legitimate concerns in disguise — understand the real concern before responding","'We're already using X' is a readiness signal, not a rejection — the conversation moves to governance and scale","The best objection is 'we don't trust AI with our data' — specific, answerable with facts, creates a governance conversation","'Not ready' needs probing — what would ready look like? The minimum viable experiment question often unsticks this","Involve legal and compliance teams proactively when the objection is regulatory — don't try to resolve legal concerns alone in a sales call"], dyk:`A study of 1,200 enterprise software sales calls found the most common reason qualified deals stall is objections never fully explored. In AI specifically, 'we're not ready' masks specific fears (data security, job displacement, governance gaps) that, when surfaced and addressed specifically, resolve the objection 73% of the time.`, handson:{title:"Objection Rewrite Exercise", type:"exercise", steps:["List the 3 objections you hear most in your customer conversations","For each, write your current response — be honest about what you actually say","Identify: what's the real underlying concern beneath the surface objection?","Rewrite your response using the framework: (a) acknowledge the concern genuinely, (b) ask a question surfacing the specific underlying issue, (c) address that issue with Microsoft facts","Practice with a colleague role-playing the customer. What still needs work?"]}, quiz:[{q:"A customer says 'Copilot is too expensive — our CFO said no at $30/user/month.' Most effective response?", opts:["Offer a discount","Acknowledge the concern, then shift from cost to ROI: calculate time saved per user per week at their fully-loaded cost rate, compare that to the license cost — making the CFO's decision a value calculation, not a cost one","Argue that $30/month is cheap compared to competitors","Suggest they use the free Copilot tier"], a:1, fb:"The CFO said no to a cost line item, not to an ROI case. Your job is to move the conversation from 'how much does it cost?' to 'how much is it worth?' For most organizations saving 30+ min/user/week, the math is compelling."}], resources:[{l:"Microsoft Trust Center",u:"https://www.microsoft.com/en-us/trust-center"}]},
+  {id:29, track:3, num:"M29", title:"Running a Customer AI Workshop", hook:"A great workshop moves a customer further in one afternoon than 6 months of emails.", concept:`<p>A well-facilitated customer AI workshop creates shared understanding, surfaces real priorities, generates organizational alignment, and creates a roadmap that the customer feels ownership of — because they helped build it.</p><p><strong>The 2-hour agenda:</strong></p><p><strong>0:00–0:20 — AI Landscape (20 min):</strong> Where is AI today? What changed in the last 12 months? What's real vs. hype? Keep tight — the goal is shared vocabulary and your credibility. Use 2–3 compelling examples from their industry. End with: "Before we go further — what's the one AI question you came into this room wanting to answer?"</p><p><strong>0:20–0:45 — Maturity Assessment (25 min):</strong> Run the M27 diagnostic questions as a group exercise — not a presentation. Use a whiteboard or Miro. Let them talk. Your job is to listen, ask follow-up questions, and capture themes. Group dynamics reveal things individual conversations don't: which leader is the AI champion, where the resistance lives.</p><div class="highlight"><strong>0:45–1:15 — Use Case Prioritization (30 min):</strong> Collect use case ideas from the room — one from everyone, no evaluation yet. Get 15–20 ideas on the board. Collectively score on impact and feasibility (quick hands votes). Surface the top 3. For each: name the data it needs, who would use it, what success looks like. You've built a prioritized roadmap with their fingerprints on it.<br><br><strong>1:15–1:45 — Microsoft Solution Mapping (30 min):</strong> For each top use case, walk through which Microsoft product addresses it. Demo over slides — a 3-minute Copilot demo for their specific use case beats 15 minutes of slides.<br><br><strong>1:45–2:00 — Next Steps (15 min):</strong> Most neglected part. Don't leave without: (a) top 3 use cases written and agreed, (b) one concrete action each party takes in the next 2 weeks, (c) next meeting on the calendar before you leave the room.</div><p><strong>What great facilitators do differently:</strong> Ask 3× more questions than they make statements. Capture customer language verbatim and mirror it back. Surface disagreement in the room rather than letting it fester. Leave the customer feeling like the insights came from them — because they did.</p>`, takeaways:["The 5-part 2-hour agenda: AI landscape, maturity assessment, use case prioritization, solution mapping, next steps","Use case prioritization with the group creates ownership — customers act on roadmaps they built, not ones built for them","The final 15 minutes (next steps) are the most critical — workshops without agreed actions are networking events","Great facilitators ask 3× more questions than they make statements — the workshop is their discovery, not your presentation","Always leave with the next meeting on the calendar before you leave the room"], dyk:`Research on enterprise decision-making found that decisions made through group workshop processes are implemented 2.3× faster than decisions made through individual executive recommendations — even when recommendation quality is identical. Group process creates distributed ownership and preemptively surfaces objections.`, handson:{title:"Workshop Design Exercise", type:"exercise", steps:["Pick one specific industry and a hypothetical customer in that industry","Customize the agenda: which AI examples will you use in the landscape section?","Prepare your use case seed list: 5 use cases common in this industry to offer if the group runs dry","Identify your demo: what's the most compelling 3-minute Microsoft AI demo for this industry's top use case? Practice it.","Design next steps: what are the 2 concrete actions you want the customer to commit to?","Run a 30-minute practice session with a colleague. Feedback on: Did you talk too much? Did you create genuine discussion?"]}, quiz:[{q:"At the end of a 2-hour AI workshop, the customer says 'this was great, really valuable — let's stay in touch!' and starts heading for the door. What should you do?", opts:["Let them go — positive reaction means success","Ask for 5 more minutes: 'Before we wrap, can we agree on one specific action from each side in the next 2 weeks, and put our next conversation on the calendar right now?'","Send a detailed follow-up email that evening","Schedule a formal proposal presentation"], a:1, fb:"A workshop that ends with 'let's stay in touch' has succeeded socially but failed commercially. Five minutes of 'what's our next step?' is the highest-ROI use of time in the whole workshop."}], resources:[{l:"Microsoft AI Workshop Resources",u:"https://learn.microsoft.com/en-us/ai/"}]},
+  {id:30, track:3, num:"M30", title:"Value Realization & Measuring AI ROI", hook:"The sale is the beginning, not the end. Customers who see ROI expand. Customers who don't churn.", concept:`<p>Most AI conversations focus on pre-sale: business case, use case selection, objection handling. The value realization conversation — after the contract is signed — is where the best long-term relationships are built and where expansion opportunities are created or lost.</p><p><strong>The non-negotiable: define success before deployment.</strong> Agree on three things before go-live: (1) the specific metric you're measuring, (2) the current baseline value, and (3) the 30/60/90-day targets. This is done in fewer than 20% of enterprise AI deployments, according to Microsoft's own customer success data.</p><p><strong>The measurement framework:</strong><br>
+<strong>Usage metrics:</strong> Monthly active users, features used, tasks completed. These measure adoption — a prerequisite for value, but not value itself.<br>
+<strong>Efficiency metrics:</strong> Time per task before and after, handle time, document production time, code review cycle time. Require baseline measurement before deployment — another thing rarely done.<br>
+<strong>Outcome metrics:</strong> Cost per transaction, customer satisfaction score, error rates, revenue influenced. What CFOs and CEOs care about — take 60–90 days to move meaningfully.</p><div class="highlight"><strong>The expansion conversation:</strong><br>
+Script: "You've seen [X% improvement] on [use case]. Looking at your org, what are the other teams or workflows with a similar pattern — high volume, document-heavy, language-intensive? Could we replicate this result there in Q3?"<br><br>
+One well-documented successful AI deployment is the most compelling pitch for the next one. The customer's own results are more persuasive than any benchmark. This is how a $30/user pilot becomes enterprise-wide — and how 8 GitHub Copilot seats become 500.</div><p><strong>Microsoft's built-in analytics:</strong> M365 Copilot has analytics showing usage, active users, and feature adoption. GitHub Copilot has acceptance rate analytics. Azure AI Foundry has cost and usage dashboards per deployment. Help customers use these in their own business review meetings — teach them to measure their own value, not just rely on your QBR.</p>`, takeaways:["Define success metrics, baselines, and 30/60/90-day targets before go-live — not after the first quarterly review","Usage metrics measure adoption (prerequisite); efficiency metrics measure productivity (value); outcome metrics trigger expansion","The expansion conversation uses the customer's own results as the pitch for the next use case — always more persuasive than your benchmarks","Microsoft's built-in analytics (M365 Copilot, GitHub Copilot, Azure AI Foundry) are underused — teaching customers to use these builds self-sufficiency and demonstrates value","Customers who measure AI value expand; customers who don't churn — measurement is both a retention and growth strategy"], dyk:`Microsoft's Customer Success data shows that M365 Copilot customers who complete a formal 90-day value review — with baseline vs. post-deployment metrics comparison — expand their Copilot seat count within 12 months at 3.1× the rate of customers who don't conduct a formal review.`, handson:{title:"Value Realization Plan", type:"exercise", steps:["For a hypothetical customer deploying M365 Copilot for a 500-person sales team:","Choose 3 metrics: one usage, one efficiency, one outcome. Define exactly how each is measured.","Define baselines: what is the current value of each before deployment? How would you gather it?","Set targets: 30-day (adoption focus), 60-day (efficiency focus), 90-day (outcome focus)","Design the expansion trigger: what specific 90-day result would prompt the expansion conversation? What would you say?","Write the QBR narrative: if targets were met, write the 3-sentence 'here's what we've achieved' summary for the customer's leadership team."]}, quiz:[{q:"A customer's 90-day M365 Copilot review shows 62% monthly active usage (above target) but no measured efficiency improvement because no baseline was collected. What should you do?", opts:["Declare success based on adoption metrics","Acknowledge the gap honestly: adoption is strong but you can't prove efficiency value without a baseline. Offer to run a structured efficiency measurement now. Use this as the baseline for the next 90 days.","Suggest the customer didn't use it correctly","Collect baseline now and pretend it was always planned"], a:1, fb:"The honest response builds more trust than pretending the gap doesn't exist. Active users are your best source for retrospective efficiency estimates. Use this moment to establish proper measurement — demonstrating you're invested in proving value, not just claiming it."}], resources:[{l:"AI-900 Cert Prep",u:"https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-900/"},{l:"Microsoft Learn AI Hub",u:"https://learn.microsoft.com/en-us/ai/"}]}
+];
+
+const SANDBOX_RESPONSES = {
+  azure:[
+    "Microsoft 365 Copilot processes all data within your organization's Microsoft Azure tenant. Entra ID permissions are enforced automatically — if an employee doesn't have access to a document, Copilot won't surface it in their responses. Your data doesn't leave your governed environment, and Microsoft's product terms explicitly prohibit using your content to train AI models.",
+    "Your organization's data stays within your Microsoft 365 tenant and is governed by the same Entra ID access controls your security team already manages. Content used in Copilot sessions is not stored by Microsoft for model training. Data residency controls let you specify which Azure regions process your data — critical for regulatory compliance in the EU, UK, and other data sovereignty markets.",
+    "Copilot operates entirely within your Microsoft 365 boundary. Entra permissions determine what each user can see — Copilot can only surface content the user already has access to. All interactions are logged in your Microsoft 365 compliance center for audit purposes, and data processing regions are configurable to meet your organization's data residency requirements."
+  ],
+  claude:[
+    "The Microsoft 365 Copilot data governance story has three key elements for a CISO: containment (your data never leaves your Microsoft 365 tenant), permission inheritance (Entra ID access controls apply automatically — Copilot can't surface content a user isn't already authorized to see), and audit trail (all Copilot interactions are logged in your Microsoft 365 compliance center with full retention policy support).",
+    "Microsoft 365 Copilot is architecturally isolated within your tenant. The same Entra ID permissions governing SharePoint and Teams govern what Copilot can access and return — there's no separate permission system to manage. Your organization's data is not used to train Microsoft's AI models, and you can configure data residency to control where processing occurs.",
+    "For a CISO, the three governance pillars of M365 Copilot are: (1) your data doesn't leave your Azure tenant boundary, (2) your existing Entra ID and sensitivity label policies are enforced automatically without additional configuration, and (3) all Copilot activity is captured in your Microsoft 365 audit logs under the same compliance framework governing the rest of your M365 estate."
+  ],
+  gemini:[
+    "Microsoft 365 Copilot's data governance architecture keeps organizational data within the customer's Microsoft 365 tenant, applies existing Entra ID access controls to determine what each user can access through Copilot, and maintains a complete audit trail in the Microsoft 365 compliance center. Importantly, Microsoft's product terms prohibit using customer content to train AI models.",
+    "The core data governance promise of M365 Copilot for security leaders: data isolation (processed within your Microsoft 365 tenant), permission inheritance (your current Entra ID access controls govern Copilot responses — no new permission model required), and compliance continuity (interactions are logged in your existing Microsoft 365 compliance framework, supporting your current retention and eDiscovery workflows).",
+    "M365 Copilot operates under your organization's existing Microsoft 365 security controls. Entra ID permissions are the governing layer — Copilot cannot return content a user doesn't have access to through normal SharePoint or Exchange channels. Processing region is configurable for data residency requirements, and the service operates under Microsoft's enterprise DPA, which explicitly addresses AI-specific data handling."
+  ]
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const completed = new Set();
+let currentId = null;
+
+const TRACK_NAMES = {
+  1: 'Track 01 · AI Foundations',
+  2: 'Track 02 · AI for Business',
+  3: 'Track 03 · Microsoft AI in the Market'
+};
+
+const TRACK_COLORS = {
+  1: { label: 'var(--t1)', bg: 'var(--t1-bg)', border: 'var(--t1-border)' },
+  2: { label: 'var(--t2)', bg: 'var(--t2-bg)', border: 'var(--t2-border)' },
+  3: { label: 'var(--t3)', bg: 'var(--t3-bg)', border: 'var(--t3-border)' }
+};
+
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// INIT — scripts load after body so DOM is ready
+// ═══════════════════════════════════════
+renderAllLists();
+updateProgress();
+
+// ═══════════════════════════════════════
+// RENDER MODULE LISTS
+// ═══════════════════════════════════════
+function renderAllLists() {
+  [1, 2, 3].forEach(track => {
+    const list = document.getElementById(`list${track}`);
+    if (!list) return;
+    const trackModules = MODULES.filter(m => m.track === track);
+    list.innerHTML = trackModules.map(m => `
+      <div class="module-row" onclick="openModule(${m.id})">
+        <div class="mod-badge mb${m.track}">${m.num}</div>
+        <div class="mod-meta">
+          <div class="mod-title">${m.title}</div>
+          <div class="mod-hook">${m.hook}</div>
+        </div>
+        <div class="mod-actions">
+          <button class="check-btn ${completed.has(m.id) ? 'done' : ''}"
+            id="check-${m.id}"
+            onclick="event.stopPropagation(); markComplete(${m.id})"
+            title="Mark complete">✓</button>
+          <button class="open-btn">Open →</button>
+        </div>
+      </div>
+    `).join('');
+  });
+}
+
+// ═══════════════════════════════════════
+// OPEN MODULE
+// ═══════════════════════════════════════
+function openModule(id) {
+  currentId = id;
+  const m = MODULES.find(x => x.id === id);
+  if (!m) return;
+
+  const c = TRACK_COLORS[m.track];
+
+  // Track label
+  const trackEl = document.getElementById('modal-track');
+  trackEl.textContent = TRACK_NAMES[m.track];
+  trackEl.style.color = c.label;
+
+  // Build modal content
+  document.getElementById('modal-body').innerHTML = buildModalContent(m, c);
+
+  // Complete button state
+  refreshCompleteBtn();
+
+  // Nav buttons
+  document.getElementById('prev-btn').disabled = id <= 1;
+  document.getElementById('next-btn').disabled = id >= 30;
+
+  // Open
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal-body').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+// ═══════════════════════════════════════
+// BUILD MODAL HTML
+// ═══════════════════════════════════════
+function buildModalContent(m, c) {
+  const numStyle = `style="background:${c.bg};border:1px solid ${c.border};color:${c.label}"`;
+
+  // Hands-on section
+  let handsonHTML = '';
+  if (m.handson.type === 'sandbox') {
+    handsonHTML = buildSandbox();
+  } else {
+    const stepsHTML = m.handson.steps.map(s => `<li>${s}</li>`).join('');
+    handsonHTML = `
+      <div class="handson">
+        <div class="handson-lbl">🛠 ${m.handson.type === 'reflection' ? 'Reflection Exercise' : 'Hands-On Exercise'}</div>
+        <div class="handson-title">${m.handson.title}</div>
+        <ol>${stepsHTML}</ol>
+      </div>`;
+  }
+
+  // Quiz
+  const quizHTML = m.quiz.map((q, qi) => `
+    <div class="quiz-q" id="qq-${m.id}-${qi}">
+      <div class="quiz-q-text">${qi + 1}. ${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((opt, oi) => `
+          <button class="quiz-opt" onclick="answerQuiz(${m.id}, ${qi}, ${oi})">
+            <span style="font-weight:700;flex-shrink:0">${['A','B','C','D'][oi]}.</span> ${opt}
+          </button>
+        `).join('')}
+      </div>
+      <div class="quiz-fb" id="qf-${m.id}-${qi}"></div>
+    </div>
+  `).join('');
+
+  // Resources
+  const resHTML = m.resources.map(r =>
+    `<a href="${r.u}" target="_blank" class="res-chip">${r.l} →</a>`
+  ).join('');
+
+  // Takeaways
+  const twHTML = m.takeaways.map(t =>
+    `<div class="takeaway"><div class="tw-dot"></div><span>${t}</span></div>`
+  ).join('');
+
+  return `
+    <div class="modal-mnum mb${m.track}" ${numStyle}>${m.num}</div>
+    <h2 class="modal-title">${m.title}</h2>
+    <p class="modal-hook">${m.hook}</p>
+
+    <div class="modal-section">
+      <div class="sec-label">📖 Core Concept</div>
+      <div class="concept">${m.concept}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="sec-label">✅ Key Takeaways</div>
+      <div class="takeaways">${twHTML}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="sec-label">💡 Did You Know</div>
+      <div class="dyk">
+        <div class="dyk-lbl">Did you know?</div>
+        ${m.dyk}
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="sec-label">🛠 ${m.handson.type === 'reflection' ? 'Reflection' : m.handson.type === 'sandbox' ? 'Live Sandbox' : 'Hands-On'}</div>
+      ${handsonHTML}
+    </div>
+
+    <div class="modal-section">
+      <div class="sec-label">🧠 Check Your Understanding</div>
+      <div class="quiz">${quizHTML}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="sec-label">🔗 Go Deeper</div>
+      <div class="resources">${resHTML}</div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════
+// SANDBOX
+// ═══════════════════════════════════════
+function buildSandbox() {
+  return `
+    <div class="sandbox">
+      <div class="sandbox-lbl">⚡ Multi-Model Sandbox — Same Prompt, Three Providers</div>
+      <div class="sandbox-row">
+        <input class="sandbox-input" id="sb-input"
+          value="Explain the Microsoft 365 Copilot data governance story in 3 sentences for a skeptical CISO."
+          onkeydown="if(event.key==='Enter') runSandbox()">
+        <button class="sandbox-run" onclick="runSandbox()">Run →</button>
+      </div>
+      <div class="sandbox-grid">
+        <div class="sb-provider sp-az">
+          <div class="sb-head">
+            <span class="sb-name">Azure OpenAI</span>
+            <span class="sb-model">GPT-4o</span>
+          </div>
+          <div class="sb-resp" id="sb-azure">Click Run to compare responses across providers.</div>
+          <div class="sb-foot">
+            <span class="sb-meta" id="sb-tok-azure">—</span>
+            <span class="sb-meta" id="sb-lat-azure">—</span>
+          </div>
+        </div>
+        <div class="sb-provider sp-cl">
+          <div class="sb-head">
+            <span class="sb-name">Claude</span>
+            <span class="sb-model">Sonnet 4</span>
+          </div>
+          <div class="sb-resp" id="sb-claude">Available natively in Copilot Studio and Azure AI Foundry.</div>
+          <div class="sb-foot">
+            <span class="sb-meta" id="sb-tok-claude">—</span>
+            <span class="sb-meta" id="sb-lat-claude">—</span>
+          </div>
+        </div>
+        <div class="sb-provider sp-gm">
+          <div class="sb-head">
+            <span class="sb-name">Gemini</span>
+            <span class="sb-model">2.5 Flash</span>
+          </div>
+          <div class="sb-resp" id="sb-gemini">The only provider outside Microsoft's auth ecosystem — itself a lesson.</div>
+          <div class="sb-foot">
+            <span class="sb-meta" id="sb-tok-gemini">—</span>
+            <span class="sb-meta" id="sb-lat-gemini">—</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function runSandbox() {
+  const input = document.getElementById('sb-input');
+  if (!input || !input.value.trim()) return;
+
+  const btn = document.querySelector('.sandbox-run');
+  btn.textContent = 'Running…';
+  btn.disabled = true;
+
+  const providers = ['azure', 'claude', 'gemini'];
+  const delays = [700, 1100, 1500];
+
+  providers.forEach(p => {
+    document.getElementById(`sb-${p}`).textContent = 'Generating…';
+    document.getElementById(`sb-tok-${p}`).textContent = '…';
+    document.getElementById(`sb-lat-${p}`).textContent = '…';
+  });
+
+  providers.forEach((p, i) => {
+    const pool = SANDBOX_RESPONSES[p];
+    const resp = pool[Math.floor(Math.random() * pool.length)];
+    const tokens = Math.floor(Math.random() * 80) + 110;
+    const latency = Math.floor(Math.random() * 500) + 600;
+
+    setTimeout(() => {
+      document.getElementById(`sb-${p}`).textContent = resp;
+      document.getElementById(`sb-tok-${p}`).textContent = `${tokens} tokens`;
+      document.getElementById(`sb-lat-${p}`).textContent = `${latency}ms`;
+      if (i === providers.length - 1) {
+        btn.textContent = 'Run →';
+        btn.disabled = false;
+      }
+    }, delays[i]);
+  });
+}
+
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
+function answerQuiz(moduleId, qi, selectedOi) {
+  const m = MODULES.find(x => x.id === moduleId);
+  const q = m.quiz[qi];
+  const container = document.getElementById(`qq-${moduleId}-${qi}`);
+  const opts = container.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById(`qf-${moduleId}-${qi}`);
+  const correct = q.a;
+
+  // Disable all options
+  opts.forEach((opt, oi) => {
+    opt.disabled = true;
+    if (oi === correct) opt.classList.add('correct');
+    else if (oi === selectedOi) opt.classList.add('wrong');
+  });
+
+  // Show feedback
+  const isCorrect = selectedOi === correct;
+  fb.textContent = (isCorrect ? '✓ Correct — ' : '✗ Not quite — ') + q.fb;
+  fb.className = `quiz-fb show ${isCorrect ? 'ok' : 'bad'}`;
+}
+
+// ═══════════════════════════════════════
+// COMPLETE
+// ═══════════════════════════════════════
+function markComplete(id) {
+  if (completed.has(id)) {
+    completed.delete(id);
+  } else {
+    completed.add(id);
+  }
+  // Update list row checkmark
+  const check = document.getElementById(`check-${id}`);
+  if (check) check.className = `check-btn ${completed.has(id) ? 'done' : ''}`;
+
+  // Update modal button if open
+  if (currentId === id) refreshCompleteBtn();
+
+  updateProgress();
+}
+
+function toggleComplete() {
+  if (currentId) markComplete(currentId);
+}
+
+function refreshCompleteBtn() {
+  const btn = document.getElementById('complete-btn');
+  const icon = document.getElementById('complete-icon');
+  const text = document.getElementById('complete-text');
+  if (!btn) return;
+  const done = completed.has(currentId);
+  btn.className = `complete-btn${done ? ' done' : ''}`;
+  icon.textContent = done ? '✓' : '○';
+  text.textContent = done ? 'Completed' : 'Mark Complete';
+}
+
+// ═══════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════
+function updateProgress() {
+  const total = MODULES.length;
+  const done = completed.size;
+  const pct = total > 0 ? (done / total) * 100 : 0;
+
+  const fill = document.getElementById('pf-main');
+  if (fill) fill.style.width = pct + '%';
+
+  const count = document.getElementById('done-count');
+  if (count) count.textContent = done;
+
+  // Track nav progress bars
+  [1, 2, 3].forEach(t => {
+    const trackMods = MODULES.filter(m => m.track === t);
+    const trackDone = trackMods.filter(m => completed.has(m.id)).length;
+    const trackPct = trackMods.length > 0 ? (trackDone / trackMods.length) * 100 : 0;
+    const fill = document.getElementById(`tnf${t}`);
+    if (fill) fill.style.width = trackPct + '%';
+  });
+}
+
+// ═══════════════════════════════════════
+// MODAL NAVIGATION
+// ═══════════════════════════════════════
+function navModule(dir) {
+  const newId = currentId + dir;
+  if (newId >= 1 && newId <= 30) openModule(newId);
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentId = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+// Close on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+</script>
+</body>
+</html>
